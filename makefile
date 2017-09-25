@@ -1,7 +1,8 @@
 all: Engine.class
 
 
-Engine.class: Engine.java Board.java Tile.java
+
+Engine.class: Board.java Engine.java Move.java MoveList.java Solver.java Tile.java
 	javac Engine.java
 
 test: Engine.class

@@ -158,25 +158,25 @@ public class Board{
       switch(move.get_direction()){
          case UP:
             if(empty_position[1] == 0){
-               System.out.printf("UP failed\n");
+               //System.out.printf("UP failed\n");
                return false;
             }
             break;
          case DOWN:
             if(empty_position[1] == (dimension_y-1)){
-               System.out.printf("DOWN failed\n");
+               //System.out.printf("DOWN failed\n");
                return false;
             }
             break;
          case LEFT:
             if(empty_position[0] == 0){
-               System.out.printf("LEFT failed\n");
+               //System.out.printf("LEFT failed\n");
                return false;
             }
             break;
          case RIGHT:
             if(empty_position[0] == (dimension_x-1)){
-               System.out.printf("RIGHT failed\n");
+               //System.out.printf("RIGHT failed\n");
                return false;
             }
             break;

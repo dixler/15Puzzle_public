@@ -1,19 +1,18 @@
 import java.util.*;
 public class Solver{
-   Hashtable<Board, Board> graph;
+   Hashtable<Integer, Board> graph;
    MoveList solution_set;
    LinkedList<MoveList> list_queue;
    Board target;
 
    public Solver(Board target){
-      this.target = target;
+      this.target = target.clone();
       solution_set = new MoveList();
       list_queue = new LinkedList<MoveList>();
-      graph = new Hashtable<Board, Board>();
+      graph = new Hashtable<Integer, Board>();
       return;
    }
    public MoveList find_solution(Board origin){
-         System.out.printf("WORKING\n");
       // add the first node to the Hashtable
       MoveList first_node = new MoveList(){
          @Override
@@ -25,7 +24,7 @@ public class Solver{
       // set the board
       first_node.set_board(origin);
       // place the current position into the hash table
-      this.graph.put(first_node.get_board(), first_node.get_board());
+      this.graph.put(first_node.get_board().hashCode(), first_node.get_board());
       this.list_queue.addLast(first_node);
       return bfs();
    }
@@ -35,15 +34,16 @@ public class Solver{
       while(list_queue.size() > 0){
          // get the next node to inspect
          MoveList cur_node = this.list_queue.pop();
+
          // check if the node is solved
-         if(this.target.equals(cur_node.get_board())){
+         if(this.target.hashCode() == cur_node.get_board().hashCode() && this.target.equals(cur_node.get_board())){
             return cur_node;
          }
          for(Move.Direction dir : Move.Direction.values()){
             MoveList next_node = cur_node.make_move(dir);
-            if(next_node != null && graph.contains(next_node)){
+            if(next_node != null && !graph.contains(next_node.get_board())){
                // add the next node to the back of the list
-               this.graph.put(next_node.get_board(), next_node.get_board());
+               this.graph.put(next_node.get_board().hashCode(), next_node.get_board());
                this.list_queue.addLast(next_node);
             }
          }
