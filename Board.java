@@ -21,6 +21,19 @@ public class Board{
 
       // create the 2-d board
       board = new Tile[this.dimension_x][this.dimension_y];
+
+      for(int cur_y = 0; cur_y < this.dimension_y; cur_y++){
+         for(int cur_x = 0; cur_x < this.dimension_x; cur_x++){
+            //pop the list
+            board[cur_x][cur_y] = new Tile(cur_y*dimension_y + cur_x);
+            // get the empty tile's position
+            if(board[cur_x][cur_y].index() == 15){
+               empty_position[0] = cur_x;
+               empty_position[1] = cur_y;
+            }
+
+         }
+      }
       return;
    }
 
@@ -38,8 +51,8 @@ public class Board{
       }while(!this.is_solveable(tiles));
 
       // fill the 2-d board
-      for(int cur_x = 0; cur_x < this.dimension_x; cur_x++){
-         for(int cur_y = 0; cur_y < this.dimension_y; cur_y++){
+      for(int cur_y = 0; cur_y < this.dimension_y; cur_y++){
+         for(int cur_x = 0; cur_x < this.dimension_x; cur_x++){
             //pop the list
             board[cur_x][cur_y] = tiles.remove(0);
             // get the empty tile's position
@@ -150,7 +163,7 @@ public class Board{
             }
             break;
          case DOWN:
-            if(empty_position[1] == dimension_y){
+            if(empty_position[1] == (dimension_y-1)){
                System.out.printf("DOWN failed\n");
                return false;
             }
@@ -162,7 +175,7 @@ public class Board{
             }
             break;
          case RIGHT:
-            if(empty_position[0] == dimension_x){
+            if(empty_position[0] == (dimension_x-1)){
                System.out.printf("RIGHT failed\n");
                return false;
             }

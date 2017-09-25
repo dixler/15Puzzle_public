@@ -5,11 +5,15 @@ public class Solver{
    LinkedList<MoveList> list_queue;
    Board target;
 
-   public Solver(Board origin, Board target){
+   public Solver(Board target){
       this.target = target;
       solution_set = new MoveList();
       list_queue = new LinkedList<MoveList>();
       graph = new Hashtable<Board, Board>();
+      return;
+   }
+   public MoveList find_solution(Board origin){
+         System.out.printf("WORKING\n");
       // add the first node to the Hashtable
       MoveList first_node = new MoveList(){
          @Override
@@ -23,9 +27,6 @@ public class Solver{
       // place the current position into the hash table
       this.graph.put(first_node.get_board(), first_node.get_board());
       this.list_queue.addLast(first_node);
-      return;
-   }
-   public MoveList find_solution(){
       return bfs();
    }
    private MoveList bfs(){
