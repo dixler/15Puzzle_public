@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.LinkedList;
 public class Engine{
    public static class Game{
       private Board board;
@@ -13,7 +14,7 @@ public class Engine{
          this.board.print_board();
          int successful_swaps = 0;
          //*
-         for(int i = 0; i < 104; i++){
+         for(int i = 0; i < 52; i++){
             switch(rand.nextInt() % 4){
                case 0:
                   if(this.board.swap(new Move(Move.Direction.UP))){
@@ -88,10 +89,10 @@ public class Engine{
 
          // TODO test solver
          System.out.printf("begin solve\n");
-         MoveList solution = this.my_solver.find_solution(this.board);
+         LinkedList<Move> solution = this.my_solver.find_solution(this.board).move_list;
             this.board.print_board();
             System.out.printf("\n");
-         while(!solution.is_empty()){
+         while(solution.size() > 0){
             this.board.swap(solution.pop());
             this.board.print_board();
             System.out.printf("\n");
