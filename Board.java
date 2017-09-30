@@ -43,6 +43,21 @@ public class Board{
       return;
    }
 
+   public int get_complexity(){
+      int inversions = 0;
+      // traverse all of the squares
+      for(int i = 0; i < width*height; i++){
+//System.out.printf("%d comparing against\n", board[i%width][i/height].index());
+         for(int j = i+1; j < width*height; j++){
+            if(board[i%width][i/height].index() > board[j%width][j/height].index()){
+//System.out.printf("%d\n", board[j%width][j/height].index());
+               inversions += 1;
+            }
+         }
+      }
+      return inversions;
+   }
+
    // this is an alternative way to shuffle them
    // it uses randomness to shuffle the puzzle, 
    // it has to wait on a legitimate tile layout
@@ -57,7 +72,8 @@ public class Board{
       // shuffle until legal hand
       do{
          Collections.shuffle(tiles);
-      }while(false/*!this.is_solveable(tiles)*/);
+      // while(is_unsolveable);
+      }while(this.get_complexity() % 2 == 1);
 
       // fill the 2-d board
       for(char cur_y = 0; cur_y < this.height; cur_y++){
@@ -86,8 +102,8 @@ public class Board{
    }
 
    //swap the empty space with the slot to the [UP/DOWN/LEFT/RIGHT] returns TRUE if successful
-   public boolean swap(Move move){
-      switch(move.get_direction()){
+   public boolean swap(Direction move){
+      switch(move){
          case UP:
             if(empty_coord[1] == 0){
                //System.out.prcharf("UP failed\n");
@@ -114,7 +130,7 @@ public class Board{
             break;
       }
       // catch illegal moves
-      char[] adj_indx = this.get_adj_tile_index(move.get_direction());
+      char[] adj_indx = this.get_adj_tile_index(move);
       Tile adj_tile = this.board[adj_indx[0]][adj_indx[1]];
 
       // move the empty tile charo the adjacent position
@@ -127,16 +143,6 @@ public class Board{
       // mark adj_indx to null for garbage collection
       adj_indx = null;
       return true;
-   }
-
-   public char[][] get_state(){
-      char[][] state = new char[this.width][this.height];
-      for(char cur_y = 0; cur_y < this.height; cur_y++){
-         for(char cur_x = 0; cur_x < this.width; cur_x++){
-            state[cur_x][cur_y] = (char)(this.board[cur_x][cur_y].index());
-         }
-      }
-      return state;
    }
 
    public Board clone(){
@@ -203,7 +209,7 @@ public class Board{
       |_|                              
    */
    
-   private Tile get_adj_tile(Move.Direction direction){
+   private Tile get_adj_tile(Direction direction){
       switch(direction){
          case UP:
             return this.board[this.empty_coord[0]][this.empty_coord[1]-1];
@@ -217,7 +223,7 @@ public class Board{
       return null;
    }
 
-   private char[] get_adj_tile_index(Move.Direction direction){
+   private char[] get_adj_tile_index(Direction direction){
       char[] adj_indx = new char[2];
       switch(direction){
          case UP:

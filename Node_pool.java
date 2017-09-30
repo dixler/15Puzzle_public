@@ -22,7 +22,7 @@ public class Node_pool{
       else{
          // recycle old node
          Node popped = pool.remove(0);
-         popped.move_list = new LinkedList<Move>();
+         popped.move_list = new LinkedList<Direction>();
          return popped;
       }
    }
