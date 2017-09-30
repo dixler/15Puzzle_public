@@ -2,19 +2,20 @@ import java.util.*;
 public class Solver{
    Hashtable<Integer, Board> graph;
    Node solution_set;
-   LinkedList<Node> list_queue;
+   ArrayList<Node> list_queue;
    Board target;
+   Node_pool pool;
 
    public Solver(Board target){
       this.target = target.clone();
-      solution_set = new Node();
-      list_queue = new LinkedList<Node>();
-      graph = new Hashtable<Integer, Board>();
+      this.list_queue = new ArrayList<Node>();
+      this.graph = new Hashtable<Integer, Board>();
+      this.pool = new Node_pool();
       return;
    }
    public Node find_solution(Board origin){
       // add the first node to the Hashtable
-      Node first_node = new Node(){
+      Node first_node = new Node(this.pool){
          @Override
          public void set_board(Board board){
             this.board = board.clone();
@@ -24,8 +25,8 @@ public class Solver{
       // set the board
       first_node.set_board(origin);
       // place the current position into the hash table
-      this.graph.put(first_node.get_board().hashCode(), first_node.get_board());
-      this.list_queue.addLast(first_node);
+      this.graph.put(first_node.hashCode(), first_node.get_board());
+      this.list_queue.add(first_node);
       return bfs();
    }
    private Node bfs(){
@@ -33,20 +34,32 @@ public class Solver{
       // inspect first position in queue
       while(list_queue.size() > 0){
          // get the next node to inspect
-         Node cur_node = this.list_queue.pop();
+         Node cur_node = this.list_queue.remove(0);
+
+
+         /*
+         System.out.printf("exploring\n");
+         cur_node.get_board().print_board();
+         */
 
          // check if the node is solved
-         if(this.target.hashCode() == cur_node.get_board().hashCode() && this.target.equals(cur_node.get_board())){
+         if(this.target.equals(cur_node.get_board())){
             return cur_node;
          }
          for(Move.Direction dir : Move.Direction.values()){
             Node next_node = cur_node.make_move(dir);
-            if(next_node != null && !graph.contains(next_node.get_board())){
-               // add the next node to the back of the list
-               this.graph.put(next_node.get_board().hashCode(), next_node.get_board());
-               this.list_queue.addLast(next_node);
+            if(next_node != null){
+                  if(!graph.contains(next_node.get_board())){
+                     // add the next node to the back of the list
+                     this.graph.put(next_node.get_board().hashCode(), next_node.get_board());
+                     this.list_queue.add(next_node);
+                  }
+                  else{
+                     pool.return_node(next_node);
+                  }
             }
          }
+         pool.return_node(cur_node);
       }
       
       return null;

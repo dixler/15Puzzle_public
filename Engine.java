@@ -7,14 +7,14 @@ public class Engine{
 
       public Game(int board_size){
          Random rand = new Random();
-         this.board = new Board(board_size, board_size);
+         this.board = new Board((char)board_size, (char)board_size);
          // set solver original board state
          this.my_solver = new Solver(this.board);
          // make move
          this.board.print_board();
          int successful_swaps = 0;
          //*
-         for(int i = 0; i < 52; i++){
+         for(int i = 0; i < 505; i++){
             switch(rand.nextInt() % 4){
                case 0:
                   if(this.board.swap(new Move(Move.Direction.UP))){
@@ -42,7 +42,6 @@ public class Engine{
          }
          System.out.printf("Swap count: %d\n", successful_swaps);
          //*/
-         this.play();
       }
 
       public void play(){
@@ -111,6 +110,7 @@ public class Engine{
 
    public static void main(String[] args){
       Game my_game = new Game(4);
+      my_game.play();
 
       return;
    }
