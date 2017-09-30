@@ -37,10 +37,10 @@ public class Solver{
          Node cur_node = this.list_queue.remove(0);
 
 
-         /*
-         System.out.printf("exploring\n");
-         cur_node.get_board().print_board();
-         */
+//*
+System.out.printf("exploring\n");
+cur_node.get_board().print_board();
+//*/
 
          // check if the node is solved
          if(this.target.equals(cur_node.get_board())){
@@ -51,7 +51,7 @@ public class Solver{
             if(next_node != null){
                   if(!graph.contains(next_node.get_board())){
                      // add the next node to the back of the list
-                     this.graph.put(next_node.get_board().hashCode(), next_node.get_board());
+                     this.graph.put(next_node.hashCode(), next_node.get_board());
                      this.list_queue.add(next_node);
                   }
                   else{
