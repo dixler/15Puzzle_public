@@ -14,7 +14,7 @@ public class Engine{
          this.board.print_board();
          int successful_swaps = 0;
          //*
-         for(int i = 0; i < 55; i++){
+         for(int i = 0; i < 25; i++){
             switch(rand.nextInt() % 4){
                case 0:
                   if(this.board.swap(new Move(Move.Direction.UP))){
@@ -47,48 +47,10 @@ public class Engine{
       public void play(){
 
          this.board.print_board();
-         /*
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.DOWN));
-         this.board.swap(new Move(Move.Direction.DOWN));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.LEFT));
-         this.board.swap(new Move(Move.Direction.UP));
-         this.board.swap(new Move(Move.Direction.RIGHT));
-         //*/
-
          // TODO test solver
          System.out.printf("begin solve\n");
          LinkedList<Move> solution = this.my_solver.find_solution(this.board).move_list;
+         System.out.printf("Moves: %d\n", solution.size());
             this.board.print_board();
             System.out.printf("\n");
          while(solution.size() > 0){

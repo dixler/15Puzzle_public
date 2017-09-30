@@ -1,6 +1,6 @@
 import java.util.*;
 public class Solver{
-   Hashtable<Integer, Board> graph;
+   Hashtable<Board, Board> graph;
    Node solution_set;
    ArrayList<Node> list_queue;
    Board target;
@@ -9,7 +9,7 @@ public class Solver{
    public Solver(Board target){
       this.target = target.clone();
       this.list_queue = new ArrayList<Node>();
-      this.graph = new Hashtable<Integer, Board>();
+      this.graph = new Hashtable<Board, Board>();
       this.pool = new Node_pool();
       return;
    }
@@ -25,7 +25,7 @@ public class Solver{
       // set the board
       first_node.set_board(origin);
       // place the current position into the hash table
-      this.graph.put(first_node.hashCode(), first_node.get_board());
+      this.graph.put(first_node.get_board(), first_node.get_board());
       this.list_queue.add(first_node);
       return bfs();
    }
@@ -51,7 +51,7 @@ cur_node.get_board().print_board();
             if(next_node != null){
                   if(!graph.contains(next_node.get_board())){
                      // add the next node to the back of the list
-                     this.graph.put(next_node.hashCode(), next_node.get_board());
+                     this.graph.put(next_node.get_board(), next_node.get_board());
                      this.list_queue.add(next_node);
                   }
                   else{
