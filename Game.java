@@ -13,7 +13,7 @@ public class Game{
       this.board.print_board();
       int successful_swaps = 0;
       //*
-      for(int i = 0; i < 25; i++){
+      for(int i = 0; i < 55; i++){
          switch(rand.nextInt() % 4){
             case 0:
                if(this.board.swap(new Move(Move.Direction.UP))){

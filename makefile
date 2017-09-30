@@ -1,4 +1,4 @@
-all: Engine.class
+all: Main.class
 
 
 

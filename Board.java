@@ -1,46 +1,55 @@
 import java.util.ArrayList;
 import java.util.Collections;
+/*
+ * PURPOSE: manages the tiles
+ * NOTES:   uses chars in order to save size due to space complexity issues
+ */
 
 public class Board{
-   private enum coord{
-      _x, _y
-   }
-   private char dimension_x;   // x dimension of the board
-   private char dimension_y;   // y dimension of the board
+   private char width;   // x dimension of the board
+   private char height;   // y dimension of the board
    private Tile[][] board;
-   private char[] empty_position;
+   private char[] empty_coord;
 
-   /*
-    * FUNCTION:   public Board(char x, char y)
-    * description: constructor: create a board with x and y dimensions
-    */
+   /*              _     _ _      
+       _ __  _   _| |__ | (_) ___ 
+      | '_ \| | | | '_ \| | |/ __|
+      | |_) | |_| | |_) | | | (__ 
+      | .__/ \__,_|_.__/|_|_|\___|
+      |_|                         
+   */
+
+   // fill the board with tiles(in order) this serves as a base state 
+   // and gives us something to signal the solver as to our goal
    public Board(char x, char y){
-      this.dimension_x = x;
-      this.dimension_y = y;
-      this.empty_position = new char[2];
+      this.width = x;
+      this.height = y;
 
       // create the 2-d board
-      board = new Tile[this.dimension_x][this.dimension_y];
+      board = new Tile[this.width][this.height];
 
-      for(char cur_y = 0; cur_y < this.dimension_y; cur_y++){
-         for(char cur_x = 0; cur_x < this.dimension_x; cur_x++){
-            //pop the list
-            board[cur_x][cur_y] = new Tile(cur_y*dimension_y + cur_x);
-            // get the empty tile's position
-            if(board[cur_x][cur_y].index() == 15){
-               empty_position[0] = cur_x;
-               empty_position[1] = cur_y;
-            }
-
+      // fill the 2-d board
+      for(char cur_y = 0; cur_y < this.height; cur_y++){
+         for(char cur_x = 0; cur_x < this.width; cur_x++){
+            board[cur_x][cur_y] = new Tile(cur_y*height + cur_x);
          }
       }
+
+      // keep track of the empty position
+      this.empty_coord = new char[2];
+      empty_coord[0] = (char)(this.width-1);
+      empty_coord[1] = (char)(this.height-1);
+
       return;
    }
 
-   public void initialize(){
+   // this is an alternative way to shuffle them
+   // it uses randomness to shuffle the puzzle, 
+   // it has to wait on a legitimate tile layout
+   public void shuffle(){
       // make tiles and shuffle them
       ArrayList<Tile> tiles = new ArrayList<Tile>();
-      for(char tile_id = 0; tile_id < (this.dimension_x * this.dimension_y); tile_id++){
+      for(char tile_id = 0; tile_id < (this.width * this.height); tile_id++){
          Tile cur_tile = new Tile(tile_id);
          tiles.add(cur_tile);
       }
@@ -48,134 +57,57 @@ public class Board{
       // shuffle until legal hand
       do{
          Collections.shuffle(tiles);
-      }while(!this.is_solveable(tiles));
+      }while(false/*!this.is_solveable(tiles)*/);
 
       // fill the 2-d board
-      for(char cur_y = 0; cur_y < this.dimension_y; cur_y++){
-         for(char cur_x = 0; cur_x < this.dimension_x; cur_x++){
+      for(char cur_y = 0; cur_y < this.height; cur_y++){
+         for(char cur_x = 0; cur_x < this.width; cur_x++){
             //pop the list
             board[cur_x][cur_y] = tiles.remove(0);
             // get the empty tile's position
             if(board[cur_x][cur_y].index() == 15){
-               empty_position[0] = cur_x;
-               empty_position[1] = cur_y;
+               empty_coord[0] = cur_x;
+               empty_coord[1] = cur_y;
             }
 
          }
       }
       return;
    }
-   @Override
-   public int hashCode(){
-      int hash = 0;
-      for(char cur_y = 0; cur_y < dimension_y; cur_y++){
-         for(char cur_x = 0; cur_x < dimension_x; cur_x++){
-            hash += board[cur_x][cur_y].index()*(cur_x+cur_y*dimension_y);
-         }
-      }
-      return hash;
-   }
-   @Override
-   public boolean equals(Object obj){
-      // check that the dimensions are the same
-      if(this.dimension_x != ((Board)obj).dimension_x)   // dimension_x
-            return false;
-      if(this.dimension_y != ((Board)obj).dimension_y)   // dimension_y
-            return false;
 
-      for(char cur_y = 0; cur_y < dimension_y; cur_y++){
-         for(char cur_x = 0; cur_x < dimension_x; cur_x++){
-            // check that the contents of the tiles are the same
-            if(      this.board[cur_x][cur_y].index() 
-                  != ((Board)obj).board[cur_x][cur_y].index())
-               return false;
-         }
-      }
-
-      return true;
-   }
-
-   // TODO
-   private boolean is_solveable(ArrayList<Tile> tiles){
-
-      return true;
-   }
-   /*
-    * FUNCTION:   public void prchar_board()
-    * description: prchar the contents of the board
-    */
+   // displays the board to stdout
    public void print_board(){
-      for(char cur_y = 0; cur_y < this.dimension_y; cur_y++){
-         for(char cur_x = 0; cur_x < this.dimension_x; cur_x++){
+      for(char cur_y = 0; cur_y < this.height; cur_y++){
+         for(char cur_x = 0; cur_x < this.width; cur_x++){
             System.out.printf("%d\t", this.board[cur_x][cur_y].index());
          }
          System.out.printf("\n");
       }
    }
-   private Tile get_adj_tile(Move.Direction direction){
-      switch(direction){
-         case UP:
-            return this.board[this.empty_position[0]][this.empty_position[1]-1];
-         case DOWN:
-            return this.board[this.empty_position[0]][this.empty_position[1]+1];
-         case LEFT:
-            return this.board[this.empty_position[0]-1][this.empty_position[1]];
-         case RIGHT:
-            return this.board[this.empty_position[0]+1][this.empty_position[1]];
-      }
-      return null;
-   }
-   private char[] get_adj_tile_index(Move.Direction direction){
-      char[] adj_indx = new char[2];
-      switch(direction){
-         case UP:
-            adj_indx[0] = this.empty_position[0];
-            adj_indx[1] = (char)(this.empty_position[1]-1);
-            return adj_indx;
-         case DOWN:
-            adj_indx[0] = this.empty_position[0];
-            adj_indx[1] = (char)(this.empty_position[1]+1);
-            return adj_indx;
-         case LEFT:
-            adj_indx[0] = (char)(this.empty_position[0]-1);
-            adj_indx[1] = this.empty_position[1];
-            return adj_indx;
-         case RIGHT:
-            adj_indx[0] = (char)(this.empty_position[0]+1);
-            adj_indx[1] = this.empty_position[1];
-            return adj_indx;
-      }
-      // catch exceptions
-      adj_indx = null;
-      return null;
-   }
 
-   /*
-    * FUNCTION:   public void swap()
-    * description: swap the empty space with the slot to the [UP/DOWN/LEFT/RIGHT] returns TRUE if successful
-    */
+   //swap the empty space with the slot to the [UP/DOWN/LEFT/RIGHT] returns TRUE if successful
    public boolean swap(Move move){
       switch(move.get_direction()){
          case UP:
-            if(empty_position[1] == 0){
+            if(empty_coord[1] == 0){
                //System.out.prcharf("UP failed\n");
                return false;
             }
             break;
          case DOWN:
-            if(empty_position[1] == (dimension_y-1)){
+            if(empty_coord[1] == (height-1)){
                //System.out.prcharf("DOWN failed\n");
                return false;
             }
             break;
          case LEFT:
-            if(empty_position[0] == 0){
+            if(empty_coord[0] == 0){
                //System.out.prcharf("LEFT failed\n");
                return false;
             }
             break;
          case RIGHT:
-            if(empty_position[0] == (dimension_x-1)){
+            if(empty_coord[0] == (width-1)){
                //System.out.prcharf("RIGHT failed\n");
                return false;
             }
@@ -186,36 +118,37 @@ public class Board{
       Tile adj_tile = this.board[adj_indx[0]][adj_indx[1]];
 
       // move the empty tile charo the adjacent position
-      this.board[adj_indx[0]][adj_indx[1]] = this.board[this.empty_position[0]][this.empty_position[1]];
+      this.board[adj_indx[0]][adj_indx[1]] = this.board[this.empty_coord[0]][this.empty_coord[1]];
       // move the adjacent tile charo the empty position
-      this.board[this.empty_position[0]][this.empty_position[1]] = adj_tile;
+      this.board[this.empty_coord[0]][this.empty_coord[1]] = adj_tile;
 
-      // keep track of empty_position
-      this.empty_position = adj_indx;
+      // keep track of empty_coord
+      this.empty_coord = adj_indx;
       // mark adj_indx to null for garbage collection
       adj_indx = null;
       return true;
    }
 
    public char[][] get_state(){
-      char[][] state = new char[this.dimension_x][this.dimension_y];
-      for(char cur_y = 0; cur_y < this.dimension_y; cur_y++){
-         for(char cur_x = 0; cur_x < this.dimension_x; cur_x++){
+      char[][] state = new char[this.width][this.height];
+      for(char cur_y = 0; cur_y < this.height; cur_y++){
+         for(char cur_x = 0; cur_x < this.width; cur_x++){
             state[cur_x][cur_y] = (char)(this.board[cur_x][cur_y].index());
          }
       }
       return state;
    }
+
    public Board clone(){
-      Board clone = new Board(this.dimension_x, this.dimension_y);
+      Board clone = new Board(this.width, this.height);
 
-      // duplicate empty_position
-      clone.empty_position = new char[2];
-         clone.empty_position[0] = this.empty_position[0];
-         clone.empty_position[1] = this.empty_position[1];
+      // duplicate empty_coord
+      clone.empty_coord = new char[2];
+         clone.empty_coord[0] = this.empty_coord[0];
+         clone.empty_coord[1] = this.empty_coord[1];
 
-      for(char cur_y = 0; cur_y < this.dimension_y; cur_y++){
-         for(char cur_x = 0; cur_x < this.dimension_x; cur_x++){
+      for(char cur_y = 0; cur_y < this.height; cur_y++){
+         for(char cur_x = 0; cur_x < this.width; cur_x++){
             // duplicate tiles
             clone.board[cur_x][cur_y] = this.board[cur_x][cur_y].clone();
          }
@@ -223,5 +156,91 @@ public class Board{
 
       return clone;
    }
+
+   /*   ___                      _     _           
+       / _ \__   _____ _ __ _ __(_) __| | ___  ___ 
+      | | | \ \ / / _ \ '__| '__| |/ _` |/ _ \/ __|
+      | |_| |\ V /  __/ |  | |  | | (_| |  __/\__ \
+       \___/  \_/ \___|_|  |_|  |_|\__,_|\___||___/
+    */
+
+   @Override
+   public int hashCode(){
+      int hash = 0;
+      for(char cur_y = 0; cur_y < height; cur_y++){
+         for(char cur_x = 0; cur_x < width; cur_x++){
+            hash += board[cur_x][cur_y].index()*(cur_x+cur_y*height);
+         }
+      }
+      return hash;
+   }
+
+   @Override
+   public boolean equals(Object obj){
+      // check that the dimensions are the same
+      if(this.width != ((Board)obj).width)   // width
+            return false;
+      if(this.height != ((Board)obj).height)   // height
+            return false;
+
+      for(char cur_y = 0; cur_y < height; cur_y++){
+         for(char cur_x = 0; cur_x < width; cur_x++){
+            // check that the contents of the tiles in both boards
+            // are the same
+            if(      this.board[cur_x][cur_y].index() 
+                  != ((Board)obj).board[cur_x][cur_y].index())
+               return false;
+         }
+      }
+      return true;
+   }
+
+   /*             _            _       
+       _ __  _ __(_)_   ____ _| |_ ___ 
+      | '_ \| '__| \ \ / / _` | __/ _ \
+      | |_) | |  | |\ V / (_| | ||  __/
+      | .__/|_|  |_| \_/ \__,_|\__\___|
+      |_|                              
+   */
+   
+   private Tile get_adj_tile(Move.Direction direction){
+      switch(direction){
+         case UP:
+            return this.board[this.empty_coord[0]][this.empty_coord[1]-1];
+         case DOWN:
+            return this.board[this.empty_coord[0]][this.empty_coord[1]+1];
+         case LEFT:
+            return this.board[this.empty_coord[0]-1][this.empty_coord[1]];
+         case RIGHT:
+            return this.board[this.empty_coord[0]+1][this.empty_coord[1]];
+      }
+      return null;
+   }
+
+   private char[] get_adj_tile_index(Move.Direction direction){
+      char[] adj_indx = new char[2];
+      switch(direction){
+         case UP:
+            adj_indx[0] = this.empty_coord[0];
+            adj_indx[1] = (char)(this.empty_coord[1]-1);
+            return adj_indx;
+         case DOWN:
+            adj_indx[0] = this.empty_coord[0];
+            adj_indx[1] = (char)(this.empty_coord[1]+1);
+            return adj_indx;
+         case LEFT:
+            adj_indx[0] = (char)(this.empty_coord[0]-1);
+            adj_indx[1] = this.empty_coord[1];
+            return adj_indx;
+         case RIGHT:
+            adj_indx[0] = (char)(this.empty_coord[0]+1);
+            adj_indx[1] = this.empty_coord[1];
+            return adj_indx;
+      }
+      // catch exceptions
+      adj_indx = null;
+      return null;
+   }
+
 
 }
