@@ -8,7 +8,7 @@ public class Node{
       this.pool = pool;
       move_list = new LinkedList<Move>();
    }
-   // allows anonymous inner class to create a base state
+   // allows anonymous inner class to create a base state for bfs
    public void set_board(Board board){}
 
    public Move pop(){
@@ -19,6 +19,7 @@ public class Node{
       return move_list.isEmpty();
    }
 
+   // adds a move to the move_list
    public boolean add_move(Move.Direction dir){
       // TRUE on success FALSE on failure
       Move cur_move = new Move(dir);

@@ -2,11 +2,11 @@ all: Engine.class
 
 
 
-Engine.class: Board.java Engine.java Move.java Node.java Solver.java Tile.java Node_pool.java
-	javac Engine.java
+Main.class: Board.java Main.java Game.java Move.java Node.java Solver.java Tile.java Node_pool.java
+	javac Main.java
 
-test: Engine.class
-	java Engine
+test: Main.class
+	java Main
 
 clean:
 	rm *.class

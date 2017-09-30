@@ -37,7 +37,7 @@ public class Solver{
          Node cur_node = this.list_queue.remove(0);
 
 
-//*
+/*
 System.out.printf("exploring\n");
 cur_node.get_board().print_board();
 //*/
