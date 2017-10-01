@@ -13,7 +13,11 @@ public class Solver{
       this.pool = new Node_pool();
       return;
    }
+   public boolean is_solved(Board current){
+      return this.target.equals(current);
+   }
    public Node find_solution(Board origin){
+      System.out.printf("Solving\n");
       // add the first node to the Hashtable
       Node first_node = new Node(this.pool){
          @Override

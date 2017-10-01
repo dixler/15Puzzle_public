@@ -47,15 +47,19 @@ public class Board{
    public int num_tiles(){
       return this.num_tiles;
    }
+   // we stuff the tiles into an array in order
    public Tile[] get_tiles(){
       Tile[] tile_arr = new Tile[this.num_tiles];
       for(int cur_y = 0; cur_y < this.width; cur_y++){
          for(int cur_x = 0; cur_x < this.width; cur_x++){
-            tile_arr[cur_x+width*cur_y] = this.board[cur_x][cur_y];
+            tile_arr[this.board[cur_x][cur_y].index()] = this.board[cur_x][cur_y];
          }
       }
 
       return tile_arr;
+   }
+   public char[] get_empty_pos(){
+      return this.empty_coord;
    }
    public int get_width(){
       return this.width;
@@ -123,6 +127,7 @@ System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y()
          }
          System.out.printf("\n");
       }
+      System.out.printf("\n");
    }
    public void DEBUG_TILE_print_board(){
       Tile[][] board = new Tile[4][4];
@@ -277,20 +282,20 @@ System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y()
       char[] adj_indx = new char[2];
       switch(direction){
          case UP:
-            adj_indx[0] = this.empty_coord[0];
-            adj_indx[1] = (char)(this.empty_coord[1]-1);
+            adj_indx[0] = this.empty_coord[0];           // x index
+            adj_indx[1] = (char)(this.empty_coord[1]-1); // y index
             return adj_indx;
          case DOWN:
-            adj_indx[0] = this.empty_coord[0];
-            adj_indx[1] = (char)(this.empty_coord[1]+1);
+            adj_indx[0] = this.empty_coord[0];           // x index
+            adj_indx[1] = (char)(this.empty_coord[1]+1); // y index
             return adj_indx;
          case LEFT:
-            adj_indx[0] = (char)(this.empty_coord[0]-1);
-            adj_indx[1] = this.empty_coord[1];
+            adj_indx[0] = (char)(this.empty_coord[0]-1); // x index
+            adj_indx[1] = this.empty_coord[1];           // y index
             return adj_indx;
          case RIGHT:
-            adj_indx[0] = (char)(this.empty_coord[0]+1);
-            adj_indx[1] = this.empty_coord[1];
+            adj_indx[0] = (char)(this.empty_coord[0]+1); // x index
+            adj_indx[1] = this.empty_coord[1];           // y index
             return adj_indx;
       }
       // catch exceptions

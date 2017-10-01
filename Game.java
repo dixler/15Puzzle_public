@@ -43,14 +43,21 @@ public class Game{
          }
       }
       System.out.printf("Swap count: %d\n", successful_swaps);
+      System.out.printf("Complexity: %d\n", this.board.get_complexity());
       //*/
 
       //this.board.shuffle();
+      this.board.print_board();
    }
 
    public boolean user_move(Direction dir){
       if(this.board.swap(dir)){
          this.undo_list.addFirst(dir);
+         this.board.print_board();
+         if(this.my_solver.is_solved(this.board)){
+            System.out.printf("Congratulations! You solved the puzzle!\n");
+         }
+         System.out.printf("Complexity: %d\n", this.board.get_complexity());
          return true;
       }
       else
@@ -59,20 +66,21 @@ public class Game{
    }
    public void user_undo(){
       // swap by the reverse of the undo list
-      switch(undo_list.remove(0)){
-         case UP:
-      this.board.swap(Direction.DOWN);
-            break;
-         case LEFT:
-      this.board.swap(Direction.RIGHT);
-            break;
-         case DOWN:
-      this.board.swap(Direction.UP);
-            break;
-         case RIGHT:
-      this.board.swap(Direction.LEFT);
-            break;
-      }
+      if(!undo_list.isEmpty())
+         switch(undo_list.remove(0)){
+            case UP:
+               this.board.swap(Direction.DOWN);
+               break;
+            case LEFT:
+               this.board.swap(Direction.RIGHT);
+               break;
+            case DOWN:
+               this.board.swap(Direction.UP);
+               break;
+            case RIGHT:
+               this.board.swap(Direction.LEFT);
+               break;
+         }
       return;
    }
 
@@ -105,7 +113,10 @@ public class Game{
       return;
    }
    public Board get_board(){
-      return this.board.clone();
+      return this.board;
+   }
+   public char[] get_empty_pos(){
+      return this.board.get_empty_pos();
    }
    public Tile[] get_tiles(){
       return this.board.get_tiles();
