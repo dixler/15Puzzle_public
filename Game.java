@@ -53,26 +53,28 @@ public class Game{
    public void play(){
 
       this.board.print_board();
-      // TODO test solver
-      //System.out.printf("begin solve\n");
+      //this.board.DEBUG_TILE_print_board();
+      System.out.printf("Complexity: %d\n", this.board.get_complexity());
+      System.out.printf("begin solve\n");
       LinkedList<Direction> solution = this.my_solver.find_solution(this.board).move_list;
-      //System.out.printf("Moves: %d\n", solution.size());
+      System.out.printf("Moves: %d\n", solution.size());
          this.board.print_board();
          System.out.printf("\n");
       while(solution.size() > 0){
          this.board.swap(solution.pop());
          // add binding for display
          this.board.print_board();
+         //this.board.DEBUG_TILE_print_board();
          System.out.printf("\n");
       }
       System.out.printf("Solved\n");
       this.board.print_board();
-      
-
-
       return;
    }
-   public Board game_state(){
-      return null;
+   public Board get_board(){
+      return this.board.clone();
+   }
+   public Tile[] get_tiles(){
+      return this.board.get_tiles();
    }
 }

@@ -44,9 +44,6 @@ public class Node{
    public Node duplicate(){
       Node clone = pool.request_node();
       clone.board = this.board.clone();
-      for(Direction move : this.move_list){
-         clone.move_list.add(move);
-      }
       return clone;
    }
    public Board get_board(){

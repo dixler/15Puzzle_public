@@ -9,6 +9,7 @@ public class Board{
    private char width;   // x dimension of the board
    private char height;   // y dimension of the board
    private Tile[][] board;
+   private int num_tiles;
    private char[] empty_coord;
 
    /*              _     _ _      
@@ -24,6 +25,7 @@ public class Board{
    public Board(char x, char y){
       this.width = x;
       this.height = y;
+      this.num_tiles = x*y;
 
       // create the 2-d board
       board = new Tile[this.width][this.height];
@@ -31,7 +33,7 @@ public class Board{
       // fill the 2-d board
       for(char cur_y = 0; cur_y < this.height; cur_y++){
          for(char cur_x = 0; cur_x < this.width; cur_x++){
-            board[cur_x][cur_y] = new Tile(cur_y*height + cur_x);
+            board[cur_x][cur_y] = new Tile(cur_y*height + cur_x, cur_x, cur_y);
          }
       }
 
@@ -41,6 +43,25 @@ public class Board{
       empty_coord[1] = (char)(this.height-1);
 
       return;
+   }
+   public int num_tiles(){
+      return this.num_tiles;
+   }
+   public Tile[] get_tiles(){
+      Tile[] tile_arr = new Tile[this.num_tiles];
+      for(int cur_y = 0; cur_y < this.width; cur_y++){
+         for(int cur_x = 0; cur_x < this.width; cur_x++){
+            tile_arr[cur_x+width*cur_y] = this.board[cur_x][cur_y];
+         }
+      }
+
+      return tile_arr;
+   }
+   public int get_width(){
+      return this.width;
+   }
+   public int get_height(){
+      return this.height;
    }
 
    public int get_complexity(){
@@ -63,31 +84,29 @@ public class Board{
    // it has to wait on a legitimate tile layout
    public void shuffle(){
       // make tiles and shuffle them
-      ArrayList<Tile> tiles = new ArrayList<Tile>();
-      for(char tile_id = 0; tile_id < (this.width * this.height); tile_id++){
-         Tile cur_tile = new Tile(tile_id);
-         tiles.add(cur_tile);
-      }
-
-      // shuffle until legal hand
       do{
-         Collections.shuffle(tiles);
-      // while(is_unsolveable);
-      }while(this.get_complexity() % 2 == 1);
-
-      // fill the 2-d board
-      for(char cur_y = 0; cur_y < this.height; cur_y++){
-         for(char cur_x = 0; cur_x < this.width; cur_x++){
-            //pop the list
-            board[cur_x][cur_y] = tiles.remove(0);
-            // get the empty tile's position
-            if(board[cur_x][cur_y].index() == 15){
-               empty_coord[0] = cur_x;
-               empty_coord[1] = cur_y;
-            }
-
+         ArrayList<Integer> tiles = new ArrayList<Integer>();
+         for(char tile_id = 0; tile_id < (this.width * this.height); tile_id++){
+            tiles.add(new Integer(tile_id));
          }
-      }
+
+         // shuffle until legal hand
+            Collections.shuffle(tiles);
+
+         // fill the 2-d board
+         for(char cur_y = 0; cur_y < this.height; cur_y++){
+            for(char cur_x = 0; cur_x < this.width; cur_x++){
+               //pop the list
+               this.board[cur_x][cur_y] = new Tile(tiles.remove(0), cur_x, cur_y);
+               // get the empty tile's position
+               if(board[cur_x][cur_y].index() == 15){
+                  empty_coord[0] = cur_x;
+                  empty_coord[1] = cur_y;
+               }
+
+            }
+         }
+      }while(this.get_complexity() % 2 != 0);
       return;
    }
 
@@ -96,6 +115,27 @@ public class Board{
       for(char cur_y = 0; cur_y < this.height; cur_y++){
          for(char cur_x = 0; cur_x < this.width; cur_x++){
             System.out.printf("%d\t", this.board[cur_x][cur_y].index());
+
+/*
+System.out.printf("%d\t", this.board[cur_x][cur_y].index());
+System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y());
+//*/
+         }
+         System.out.printf("\n");
+      }
+   }
+   public void DEBUG_TILE_print_board(){
+      Tile[][] board = new Tile[4][4];
+      for(char cur_y = 0; cur_y < this.height; cur_y++){
+         for(char cur_x = 0; cur_x < this.width; cur_x++){
+            Tile cur_tile = this.board[cur_x][cur_y];
+            System.out.printf("%d [%d][%d]\t", board[cur_x][cur_y].index(), board[cur_x][cur_y].x(), board[cur_x][cur_y].y());
+            board[cur_tile.x()][cur_tile.y()] = cur_tile;
+         }
+      }
+      for(char cur_y = 0; cur_y < this.height; cur_y++){
+         for(char cur_x = 0; cur_x < this.width; cur_x++){
+            System.out.printf("%d\t", board[cur_x][cur_y].index());
          }
          System.out.printf("\n");
       }
@@ -103,39 +143,49 @@ public class Board{
 
    //swap the empty space with the slot to the [UP/DOWN/LEFT/RIGHT] returns TRUE if successful
    public boolean swap(Direction move){
+      Direction inverse = null;
       switch(move){
          case UP:
             if(empty_coord[1] == 0){
                //System.out.prcharf("UP failed\n");
                return false;
             }
+            inverse = Direction.DOWN;
             break;
          case DOWN:
             if(empty_coord[1] == (height-1)){
                //System.out.prcharf("DOWN failed\n");
                return false;
             }
+            inverse = Direction.UP;
             break;
          case LEFT:
             if(empty_coord[0] == 0){
                //System.out.prcharf("LEFT failed\n");
                return false;
             }
+            inverse = Direction.RIGHT;
             break;
          case RIGHT:
             if(empty_coord[0] == (width-1)){
                //System.out.prcharf("RIGHT failed\n");
                return false;
             }
+            inverse = Direction.LEFT;
             break;
       }
-      // catch illegal moves
       char[] adj_indx = this.get_adj_tile_index(move);
       Tile adj_tile = this.board[adj_indx[0]][adj_indx[1]];
+      Tile empty_tile = this.board[this.empty_coord[0]][this.empty_coord[1]];
 
-      // move the empty tile charo the adjacent position
+      // sets the swapped tiles' local positions to their new positions
+      adj_tile.move(inverse);
+      empty_tile.move(move);
+
+
+      // move the empty tile into the adjacent position
       this.board[adj_indx[0]][adj_indx[1]] = this.board[this.empty_coord[0]][this.empty_coord[1]];
-      // move the adjacent tile charo the empty position
+      // move the adjacent tile into the empty position
       this.board[this.empty_coord[0]][this.empty_coord[1]] = adj_tile;
 
       // keep track of empty_coord
@@ -146,6 +196,7 @@ public class Board{
    }
 
    public Board clone(){
+      /*
       Board clone = new Board(this.width, this.height);
 
       // duplicate empty_coord
@@ -160,7 +211,8 @@ public class Board{
          }
       }
 
-      return clone;
+      */
+      return this;
    }
 
    /*   ___                      _     _           
