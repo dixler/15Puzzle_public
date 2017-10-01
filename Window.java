@@ -39,9 +39,7 @@ public class Window {
    }
 
    public void play(){
-      this.game.user_move();
-
-
+      this.game.play();
    }
    class MoveListener implements ActionListener {
       public void actionPerformed(ActionEvent event) {

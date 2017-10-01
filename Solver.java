@@ -40,7 +40,6 @@ public class Solver{
 /*
 System.out.printf("exploring\n");
 cur_node.get_board().print_board();
-cur_node.get_board().DEBUG_TILE_print_board();
 //*/
 
          // check if the node is solved

@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.Random;
 public class Game{
    private Board board;
    private Solver my_solver;
@@ -12,7 +13,39 @@ public class Game{
       // feed the solver the original board state
       this.my_solver = new Solver(this.board);
       // now shuffle the board
-      this.board.shuffle();
+            int successful_swaps = 0;
+      //*
+      for(int i = 0; i < 55; i++){
+         Random rand = new Random();
+         switch(rand.nextInt() % 4){
+            case 0:
+               if(this.board.swap(Direction.UP)){
+                  successful_swaps++;
+                  break;
+               }
+            case 1:
+               if(this.board.swap(Direction.DOWN)){
+                  successful_swaps++;
+                  break;
+               }
+               break;
+            case 2:
+               if(this.board.swap(Direction.LEFT)){
+                  successful_swaps++;
+                  break;
+               }
+            case 3:
+               if(this.board.swap(Direction.RIGHT)){
+                  successful_swaps++;
+                  break;
+               }
+               break;
+         }
+      }
+      System.out.printf("Swap count: %d\n", successful_swaps);
+      //*/
+
+      //this.board.shuffle();
    }
 
    public boolean user_move(Direction dir){

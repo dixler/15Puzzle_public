@@ -196,7 +196,6 @@ System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y()
    }
 
    public Board clone(){
-      /*
       Board clone = new Board(this.width, this.height);
 
       // duplicate empty_coord
@@ -211,8 +210,7 @@ System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y()
          }
       }
 
-      */
-      return this;
+      return clone;
    }
 
    /*   ___                      _     _           
