@@ -14,7 +14,7 @@ public class Game{
       this.my_solver = new Solver(this.board);
       // now shuffle the board
             int successful_swaps = 0;
-      //*
+      /*
       for(int i = 0; i < 15; i++){
          Random rand = new Random();
          switch(rand.nextInt() % 4){
@@ -46,7 +46,7 @@ public class Game{
       System.out.printf("Complexity: %d\n", this.board.get_complexity());
       //*/
 
-      //this.board.shuffle();
+      this.board.shuffle();
       this.board.print_board();
    }
 

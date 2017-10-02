@@ -90,7 +90,7 @@ public class Board{
       // make tiles and shuffle them
       do{
          ArrayList<Integer> tiles = new ArrayList<Integer>();
-         for(char tile_id = 0; tile_id < (this.width * this.height); tile_id++){
+         for(char tile_id = 0; tile_id < (this.width * this.height - 1); tile_id++){
             tiles.add(new Integer(tile_id));
          }
 
@@ -100,14 +100,16 @@ public class Board{
          // fill the 2-d board
          for(char cur_y = 0; cur_y < this.height; cur_y++){
             for(char cur_x = 0; cur_x < this.width; cur_x++){
-               //pop the list
-               this.board[cur_x][cur_y] = new Tile(tiles.remove(0), cur_x, cur_y);
-               // get the empty tile's position
-               if(board[cur_x][cur_y].index() == 15){
-                  empty_coord[0] = cur_x;
-                  empty_coord[1] = cur_y;
+               // is it not the last tile?
+               if(cur_y != (this.height-1) || cur_x != (this.width-1)){
+                  Tile cur_tile = new Tile(tiles.remove(0), cur_x, cur_y);
+                  this.board[cur_x][cur_y] = cur_tile;                // get the empty tile's position
                }
-
+               else{
+                  this.board[cur_x][cur_y] = new Tile(15, cur_x, cur_y);
+                  this.empty_coord[0] = cur_x;
+                  this.empty_coord[1] = cur_y;
+               }
             }
          }
       }while(this.get_complexity() % 2 != 0);
