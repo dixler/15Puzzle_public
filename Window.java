@@ -6,19 +6,17 @@ import java.awt.event.*;
 public class Window implements ActionListener{
    private JFrame app_frame;
    private Renderer renderer;
-
-   private Gui_button button_up;
-   private Gui_button button_down;
-   private Gui_button button_left;
-   private Gui_button button_right;
-   private Gui_button button_undo;
-   private Gui_button button_undo_all;
-   private Gui_button button_solve;
-
    private Game game;
 
-   private Point empty_pos;
+   private Gui_button button_up, button_down, button_left, button_right; 
+   private JButton button_undo, button_undo_all, button_solve;
+
+   // holds the size of the tiles
    private Dimension size;
+
+   // tracks the empty position location for rendering the buttons relative to it
+   private Point empty_pos;
+
 
    private Point button_dir_pos(Direction dir, int offset){
       Point origin = new Point(this.game.get_empty_pos()[0]*(this.size.width+10), this.game.get_empty_pos()[1]*(this.size.height+10));
@@ -46,91 +44,50 @@ public class Window implements ActionListener{
 
    @SuppressWarnings("serial")
    private void initialize_buttons(){
+
       // button handling buttons are all relative to the empty space
-      this.button_up = new Gui_button(size)
-         //*
-      {
-         @Override
-         public void paint(Graphics g){
-         }
-      };
-      //*/
-      this.button_up.setActionCommand("UP");
-      this.button_up.addActionListener(this);
-      this.button_up.setOpaque(false);
-      this.button_up.setContentAreaFilled(false);
-      this.button_up.setBorderPainted(false);
-      this.button_up.setRolloverEnabled(false);
+      this.button_up = new Gui_button(size);
+         this.button_up.setActionCommand("UP");
+         this.button_up.addActionListener(this);
+         this.button_up.setLocation(this.button_dir_pos(Direction.UP, 1));
 
 
-      this.button_down = new Gui_button(size)
-         //*
-      {
-         @Override
-         public void paint(Graphics g){
-         }
-      };
-      //*/
-      this.button_down.setActionCommand("DOWN");
-      this.button_down.addActionListener(this);
-      this.button_down.setOpaque(false);
-      this.button_down.setContentAreaFilled(false);
-      this.button_down.setBorderPainted(false);
-      this.button_down.setRolloverEnabled(false);
+      this.button_down = new Gui_button(size);
+         this.button_down.setActionCommand("DOWN");
+         this.button_down.addActionListener(this);
+         this.button_down.setLocation(this.button_dir_pos(Direction.DOWN, 1));
 
-      this.button_left = new Gui_button(size)
-         //*
-      {
-         @Override
-         public void paint(Graphics g){
-         }
-      };
-      //*/
-      this.button_left.setActionCommand("LEFT");
-      this.button_left.addActionListener(this);
-      this.button_left.setOpaque(false);
-      this.button_left.setContentAreaFilled(false);
-      this.button_left.setBorderPainted(false);
-      this.button_left.setRolloverEnabled(false);
+      this.button_left = new Gui_button(size);
+         this.button_left.setActionCommand("LEFT");
+         this.button_left.addActionListener(this);
+         this.button_left.setLocation(this.button_dir_pos(Direction.LEFT, 1));
 
-      this.button_right = new Gui_button(size)
-      //*
-      {
-         @Override
-         public void paint(Graphics g){
-         }
-      };
-         //*/
-      this.button_right.setActionCommand("RIGHT");
-      this.button_right.addActionListener(this);
-      this.button_right.setOpaque(false);
-      this.button_right.setContentAreaFilled(false);
-      this.button_right.setBorderPainted(false);
-      this.button_right.setRolloverEnabled(false);
-
-      this.button_up.setLocation(this.button_dir_pos(Direction.UP, 1));
-      this.button_down.setLocation(this.button_dir_pos(Direction.DOWN, 1));
-      this.button_left.setLocation(this.button_dir_pos(Direction.LEFT, 1));
-      this.button_right.setLocation(this.button_dir_pos(Direction.RIGHT, 1));
+      this.button_right = new Gui_button(size);
+         this.button_right.setActionCommand("RIGHT");
+         this.button_right.addActionListener(this);
+         this.button_right.setLocation(this.button_dir_pos(Direction.RIGHT, 1));
 
       // handle menu buttons
-      this.button_undo = new Gui_button(size.width, size.height/2);
-      this.button_undo.setActionCommand("undo");
-      this.button_undo.setText("undo");
-      this.button_undo.addActionListener(this);
-      this.button_undo.setLocation(this.button_pos(0, 5));
+      this.button_undo = new JButton();
+         this.button_undo.setActionCommand("undo");
+         this.button_undo.setText("undo");
+         this.button_undo.setSize(size.width, size.height/2);
+         this.button_undo.addActionListener(this);
+         this.button_undo.setLocation(this.button_pos(0, 5));
 
-      this.button_undo_all = new Gui_button(size.width, size.height/2);
-      this.button_undo_all.setActionCommand("undo all");
-      this.button_undo_all.setText("undo all");
-      this.button_undo_all.addActionListener(this);
-      this.button_undo_all.setLocation(this.button_pos(1, 5));
+      this.button_undo_all = new JButton();
+         this.button_undo_all.setActionCommand("undo all");
+         this.button_undo_all.setText("undo all");
+         this.button_undo_all.setSize(size.width, size.height/2);
+         this.button_undo_all.addActionListener(this);
+         this.button_undo_all.setLocation(this.button_pos(1, 5));
 
-      this.button_solve = new Gui_button(size.width, size.height/2);
-      this.button_solve.setActionCommand("solve");
-      this.button_solve.setText("solve");
-      this.button_solve.addActionListener(this);
-      this.button_solve.setLocation(this.button_pos(2, 5));
+      this.button_solve = new JButton();
+         this.button_solve.setActionCommand("solve");
+         this.button_solve.setText("solve");
+         this.button_solve.setSize(size.width, size.height/2);
+         this.button_solve.addActionListener(this);
+         this.button_solve.setLocation(this.button_pos(2, 5));
    }
 
    private void draw_frame(){
@@ -168,49 +125,15 @@ public class Window implements ActionListener{
       this.app_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       this.app_frame.setVisible(true);
 
-      // we use 10 padding
+      // create the renderer
       this.renderer = new Renderer(my_game);
       this.renderer.set_tile_size(size);
 
       this.initialize_buttons();
-
-
-      this.draw_frame();
    }
 
    public void play(){
       this.draw_frame();
-   }
-
-   private void animate(Direction dir, int delay){
-      /*
-         int index_empty = renderer.get_empty_index();
-         int index_adjacent = renderer.get_adjacent_index(dir);
-         for(int i = 0; i < 110; i++){
-         this.renderer.move_tile(index_adjacent, dir);
-         this.draw_frame();
-      //*/
-      //*
-      long secs = (System.currentTimeMillis());
-
-      /*
-         while(System.currentTimeMillis() - secs <= delay){
-         this.draw_frame();
-         }
-
-      //*/
-      //System.gc();
-
-      /*
-         try{
-         Thread.sleep(delay);
-         }catch(InterruptedException ex){
-         Thread.currentThread().interrupt();
-         }
-      /*
-      System.out.printf("TICK\n");
-         }
-      //*/
    }
 
    public void actionPerformed(ActionEvent event) {
@@ -251,7 +174,6 @@ public class Window implements ActionListener{
       else if("undo all".equals(event.getActionCommand())){
          while(!this.game.is_original_puzzle()){
             this.actionPerformed(new ActionEvent(this, 1001, "undo"));
-            this.animate(dir, 100);
          }
          return;
       }
@@ -260,12 +182,10 @@ public class Window implements ActionListener{
          System.out.printf("Solved\n");
          while(solution.size() > 0){
             this.execute_move(solution.pop());
-            this.animate(dir, 500);
          }
          return;
       }
       if(valid){
-         this.animate(dir, 100);
          this.button_up.setLocation(this.button_dir_pos(Direction.UP, 1));
          this.button_down.setLocation(this.button_dir_pos(Direction.DOWN, 1));
          this.button_left.setLocation(this.button_dir_pos(Direction.LEFT, 1));
