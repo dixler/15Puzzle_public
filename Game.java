@@ -15,7 +15,7 @@ public class Game{
       // now shuffle the board
             int successful_swaps = 0;
       //*
-      for(int i = 0; i < 55; i++){
+      for(int i = 0; i < 15; i++){
          Random rand = new Random();
          switch(rand.nextInt() % 4){
             case 0:
@@ -64,24 +64,27 @@ public class Game{
          return false;
          // handle invalid move
    }
-   public void user_undo(){
+
+   public boolean is_original_puzzle(){
+      return this.undo_list.isEmpty();
+   }
+
+   // pop the last element of the undo list for the gui to handle
+   public Direction user_undo(){
       // swap by the reverse of the undo list
-      if(!undo_list.isEmpty())
+      if(!undo_list.isEmpty()){
          switch(undo_list.remove(0)){
             case UP:
-               this.board.swap(Direction.DOWN);
-               break;
+               return Direction.DOWN;
             case LEFT:
-               this.board.swap(Direction.RIGHT);
-               break;
+               return Direction.RIGHT;
             case DOWN:
-               this.board.swap(Direction.UP);
-               break;
+               return Direction.UP;
             case RIGHT:
-               this.board.swap(Direction.LEFT);
-               break;
+               return Direction.LEFT;
          }
-      return;
+      }
+      return null;
    }
 
    // returns a solution to the current board

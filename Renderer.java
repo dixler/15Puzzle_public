@@ -14,12 +14,17 @@ public class Renderer extends JPanel {
 	
    private Gui_tile[] tile_arr;
    private Dimension size = new Dimension(100, 100);
+   private int empty_index;
 	
 	public Renderer(Game game){
       this.tile_arr = new Gui_tile[game.get_board().num_tiles()];
       Tile[] tiles = game.get_tiles();
       for(int i = 0; i < tiles.length; i++){
          this.tile_arr[i] = new Gui_tile(tiles[i], size, 10);
+         if(tiles[i].index() == 15){
+            // empty tile
+            this.empty_index = i;
+         }
       }
 	}
 	public Renderer(int num_tiles){
@@ -29,6 +34,10 @@ public class Renderer extends JPanel {
       Tile[] tiles = game.get_tiles();
       for(int i = 0; i < tiles.length; i++){
          this.tile_arr[i] = new Gui_tile(tiles[i], size, 10);
+         if(tiles[i].index() == 15){
+            // empty tile
+            this.empty_index = i;
+         }
       }
    }
 
@@ -36,7 +45,7 @@ public class Renderer extends JPanel {
    // heavily coupled with the window
    public int get_empty_index(){
       // the swapped will be somewhere relative to the empty
-      return this.tile_arr.length-1;
+      return this.empty_index;
    }
    public int get_adjacent_index(Direction dir){
       // the swapped will be somewhere relative to the empty
@@ -74,15 +83,18 @@ public class Renderer extends JPanel {
       Graphics2D drawing_context = (Graphics2D) g;
       drawing_context.setFont(new Font("TimesRoman", Font.PLAIN, 36)); 
       // handle all tiles
-      for(int i = 0; i < this.tile_arr.length-1; i++){
-         drawing_context.setColor(new Color(0,255,0));
-         drawing_context.fill(this.tile_arr[i].get_icon());
-         drawing_context.setColor(new Color(255,255,255));
-         drawing_context.drawString(this.tile_arr[i].get_label(), this.tile_arr[i].get_x(), this.tile_arr[i].get_y());
+      for(int i = 0; i < this.tile_arr.length; i++){
+         if(i == this.empty_index){
+            drawing_context.setColor(new Color(0,0,0));
+         }
+         else{
+            drawing_context.setColor(new Color(0,155,0));
+            drawing_context.fill(this.tile_arr[i].get_icon());
+            drawing_context.setColor(new Color(255,255,255));
+            drawing_context.drawString(this.tile_arr[i].get_label(), this.tile_arr[i].get_x(), this.tile_arr[i].get_y());
+         }
+         //System.out.printf("tile[%s] x: %d y: %d\n", this.tile_arr[i].get_label(), this.tile_arr[i].get_x(), this.tile_arr[i].get_y());
       }
-      // handle empty
-      drawing_context.setColor(new Color(255,255,255));
-      drawing_context.fill(this.tile_arr[this.tile_arr.length-1].get_icon());
       return;
    }
 }

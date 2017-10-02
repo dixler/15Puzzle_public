@@ -11,6 +11,11 @@ public class Main{
       Game game = new Game(4);
       //game.play();
       Window window = new Window(game);
+      boolean t = true;
+      /*while(t){
+         window.play();
+      }
+      //*/
       return;
    }
 }

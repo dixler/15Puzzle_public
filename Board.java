@@ -52,7 +52,7 @@ public class Board{
       Tile[] tile_arr = new Tile[this.num_tiles];
       for(int cur_y = 0; cur_y < this.width; cur_y++){
          for(int cur_x = 0; cur_x < this.width; cur_x++){
-            tile_arr[this.board[cur_x][cur_y].index()] = this.board[cur_x][cur_y];
+            tile_arr[cur_x+cur_y*this.width] = this.board[cur_x][cur_y];
          }
       }
 
