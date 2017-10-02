@@ -8,8 +8,6 @@ public class Solver{
 
    public Solver(Board target){
       this.target = target.clone();
-      this.list_queue = new ArrayList<Node>();
-      this.graph = new Hashtable<Board, Board>();
       this.pool = new Node_pool();
       return;
    }
@@ -18,6 +16,8 @@ public class Solver{
    }
    public Node find_solution(Board origin){
       System.out.printf("Solving\n");
+      this.list_queue = new ArrayList<Node>();
+      this.graph = new Hashtable<Board, Board>();
       // add the first node to the Hashtable
       Node first_node = new Node(this.pool){
          @Override

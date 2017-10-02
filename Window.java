@@ -149,7 +149,7 @@ public class Window implements ActionListener{
          valid = true;
       }
       else if("undo".equals(event.getActionCommand())){
-         this.execute_move(this.game.user_undo());
+         this.execute_move(this.game.user_undo(), 250);
          this.game.user_undo(); // removes the last entry
          return;
       }
@@ -166,7 +166,7 @@ public class Window implements ActionListener{
          System.out.printf("Solved\n");
          while(solution.size() > 0){
             this.renderer.print_board();
-            this.execute_move(solution.remove(0));
+            this.execute_move(solution.remove(0),1000);
             this.renderer.print_board();
          }
          return;
@@ -174,23 +174,23 @@ public class Window implements ActionListener{
       this.draw_frame();
       return;
    }
-   private void execute_move(Direction dir){
+   private void execute_move(Direction dir, int anim_time){
          if(dir == null){
             return;
          }
          // doClick's argument acts as a delay
          switch(dir){
             case UP:
-               this.button_up.doClick(100);
+               this.button_up.doClick(anim_time);
                break;
             case DOWN:
-               this.button_down.doClick(100);
+               this.button_down.doClick(anim_time);
                break;
             case LEFT:
-               this.button_left.doClick(100);
+               this.button_left.doClick(anim_time);
                break;
             case RIGHT:
-               this.button_right.doClick(100);
+               this.button_right.doClick(anim_time);
                break;
          }
          return;
