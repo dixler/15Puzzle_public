@@ -10,8 +10,8 @@ public class Tile{
       return;
    }
    public Tile clone(){
-      //Tile clone = new Tile(this.index, this.x, this.y);
-      return this;
+      Tile clone = new Tile(this.index, this.x, this.y);
+      return clone;
    }
    public int x(){
       return this.x;

@@ -11,7 +11,7 @@ public class Gui_tile{
    private Point position;
 
    public Gui_tile(Tile tile, Dimension size, int buffer_width){
-      this.tile = tile;
+      this.tile = tile.clone();
       this.icon = new Rectangle();
       this.label = new String(Integer.toString(tile.index()));
 
@@ -23,7 +23,6 @@ public class Gui_tile{
                                  this.tile.y()*((int)this.icon.getHeight() + this.buffer_width));
 
       this.icon.setLocation(this.position);
-
    }
    public Rectangle get_icon(){
          // the rectangle has been modified

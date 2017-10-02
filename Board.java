@@ -187,7 +187,6 @@ System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y()
       adj_tile.move(inverse);
       empty_tile.move(move);
 
-
       // move the empty tile into the adjacent position
       this.board[adj_indx[0]][adj_indx[1]] = this.board[this.empty_coord[0]][this.empty_coord[1]];
       // move the adjacent tile into the empty position

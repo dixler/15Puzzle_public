@@ -115,6 +115,12 @@ public class Game{
       this.board.print_board();
       return;
    }
+   public int get_width(){
+      return this.board.get_width();
+   }
+   public int get_height(){
+      return this.board.get_height();
+   }
    public Board get_board(){
       return this.board;
    }

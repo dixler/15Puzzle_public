@@ -18,29 +18,6 @@ public class Window implements ActionListener{
    private Point empty_pos;
 
 
-   private Point button_dir_pos(Direction dir, int offset){
-      Point origin = new Point(this.game.get_empty_pos()[0]*(this.size.width+10), this.game.get_empty_pos()[1]*(this.size.height+10));
-      Point target = null;
-      switch(dir){
-         case UP:
-            target = new Point(origin.x, origin.y - offset*(this.size.height+10));
-            break;
-         case DOWN:
-            target = new Point(origin.x, origin.y + offset*(this.size.height+10));
-            break;
-         case LEFT:
-            target = new Point(origin.x - offset*(this.size.width+10), origin.y);
-            break;
-         case RIGHT:
-            target = new Point(origin.x + offset*(this.size.width+10), origin.y);
-            break;
-      }
-      return target;
-   }
-
-   private Point button_pos(int offset_x, int offset_y){
-      return new Point(offset_x*(this.size.width+10), offset_y*(this.size.height+10));
-   }
 
    @SuppressWarnings("serial")
    private void initialize_buttons(){
@@ -91,21 +68,28 @@ public class Window implements ActionListener{
    }
 
    private void draw_frame(){
-      //System.out.printf("draw_frame called\n");
-      //this.renderer.update_game_state(this.game);
-      this.app_frame.setForeground(new Color(238,238,238));
-      this.app_frame.setBackground(new Color(238,238,238));
+      // update the game state so that everything is up to date
+      // when we start drawing
+      this.renderer.update_game_state(this.game);
+
       this.app_frame.add(this.button_up);
+         this.button_up.setLocation(this.button_dir_pos(Direction.UP, 1));
+
       this.app_frame.add(this.button_down);
+         this.button_down.setLocation(this.button_dir_pos(Direction.DOWN, 1));
+
       this.app_frame.add(this.button_left);
+         this.button_left.setLocation(this.button_dir_pos(Direction.LEFT, 1));
+
       this.app_frame.add(this.button_right);
+         this.button_right.setLocation(this.button_dir_pos(Direction.RIGHT, 1));
+
 
       this.app_frame.add(this.button_undo);
       this.app_frame.add(this.button_undo_all);
       this.app_frame.add(this.button_solve);
       this.app_frame.add(this.renderer);
       this.app_frame.revalidate();
-      //this.app_frame.repaint((Graphics2D)this.app_frame.getGraphics());
       this.app_frame.paint((Graphics2D)this.app_frame.getGraphics());
       this.app_frame.repaint();
    }
@@ -126,8 +110,7 @@ public class Window implements ActionListener{
       this.app_frame.setVisible(true);
 
       // create the renderer
-      this.renderer = new Renderer(my_game);
-      this.renderer.set_tile_size(size);
+      this.renderer = new Renderer(my_game, this.size);
 
       this.initialize_buttons();
    }
@@ -166,12 +149,13 @@ public class Window implements ActionListener{
          valid = true;
       }
       else if("undo".equals(event.getActionCommand())){
-         dir = this.game.user_undo();
-         this.execute_move(dir);
+         this.execute_move(this.game.user_undo());
          this.game.user_undo(); // removes the last entry
          return;
       }
       else if("undo all".equals(event.getActionCommand())){
+         // while we haven't reverted the puzzle to its original one
+         // keep undoing
          while(!this.game.is_original_puzzle()){
             this.actionPerformed(new ActionEvent(this, 1001, "undo"));
          }
@@ -181,53 +165,58 @@ public class Window implements ActionListener{
          LinkedList<Direction> solution = this.game.user_solve();
          System.out.printf("Solved\n");
          while(solution.size() > 0){
-            this.execute_move(solution.pop());
+            this.renderer.print_board();
+            this.execute_move(solution.remove(0));
+            this.renderer.print_board();
          }
          return;
       }
-      if(valid){
-         this.button_up.setLocation(this.button_dir_pos(Direction.UP, 1));
-         this.button_down.setLocation(this.button_dir_pos(Direction.DOWN, 1));
-         this.button_left.setLocation(this.button_dir_pos(Direction.LEFT, 1));
-         this.button_right.setLocation(this.button_dir_pos(Direction.RIGHT, 1));
-         this.renderer.update_game_state(this.game);
-         this.draw_frame();
-      }
+      this.draw_frame();
       return;
-   }
-   private void handle_undo_all(){
-      /*
-         while(this.game.user_undo()){
-         this.renderer.update_game_state(this.game);
-         this.draw_frame();
-         this.animate(null, 500);
-         }
-         return;
-         */
    }
    private void execute_move(Direction dir){
          if(dir == null){
             return;
          }
+         // doClick's argument acts as a delay
          switch(dir){
             case UP:
-               //this.actionPerformed(new ActionEvent(this, 1001, "UP"));
                this.button_up.doClick(100);
                break;
             case DOWN:
-               //this.actionPerformed(new ActionEvent(this, 1001, "DOWN"));
                this.button_down.doClick(100);
                break;
             case LEFT:
-               //this.actionPerformed(new ActionEvent(this, 1001, "LEFT"));
                this.button_left.doClick(100);
                break;
             case RIGHT:
-               //this.actionPerformed(new ActionEvent(this, 1001, "RIGHT"));
                this.button_right.doClick(100);
                break;
          }
          return;
+   }
+   private Point button_dir_pos(Direction dir, int offset){
+      Point origin = new Point(  this.game.get_empty_pos()[0]*(this.size.width+10), 
+                                 this.game.get_empty_pos()[1]*(this.size.height+10));
+      switch(dir){
+         case UP:
+            return new Point( origin.x, 
+                              origin.y - offset*(this.size.height+10));
+         case DOWN:
+            return new Point( origin.x, 
+                              origin.y + offset*(this.size.height+10));
+         case LEFT:
+            return new Point( origin.x - offset*(this.size.width+10), 
+                              origin.y);
+         case RIGHT:
+            return new Point( origin.x + offset*(this.size.width+10), 
+                              origin.y);
+      }
+      return null;
+   }
+
+   private Point button_pos(int offset_x, int offset_y){
+      return new Point(offset_x*(this.size.width+10), offset_y*(this.size.height+10));
    }
 }
 
