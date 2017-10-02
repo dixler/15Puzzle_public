@@ -244,6 +244,48 @@ public class Window implements ActionListener{
       }
       else if("undo".equals(event.getActionCommand())){
          dir = this.game.user_undo();
+         this.execute_move(dir);
+         this.game.user_undo(); // removes the last entry
+         return;
+      }
+      else if("undo all".equals(event.getActionCommand())){
+         while(!this.game.is_original_puzzle()){
+            this.actionPerformed(new ActionEvent(this, 1001, "undo"));
+            this.animate(dir, 100);
+         }
+         return;
+      }
+      else if("solve".equals(event.getActionCommand())){
+         LinkedList<Direction> solution = this.game.user_solve();
+         System.out.printf("Solved\n");
+         while(solution.size() > 0){
+            this.execute_move(solution.pop());
+            this.animate(dir, 500);
+         }
+         return;
+      }
+      if(valid){
+         this.animate(dir, 100);
+         this.button_up.setLocation(this.button_dir_pos(Direction.UP, 1));
+         this.button_down.setLocation(this.button_dir_pos(Direction.DOWN, 1));
+         this.button_left.setLocation(this.button_dir_pos(Direction.LEFT, 1));
+         this.button_right.setLocation(this.button_dir_pos(Direction.RIGHT, 1));
+         this.renderer.update_game_state(this.game);
+         this.draw_frame();
+      }
+      return;
+   }
+   private void handle_undo_all(){
+      /*
+         while(this.game.user_undo()){
+         this.renderer.update_game_state(this.game);
+         this.draw_frame();
+         this.animate(null, 500);
+         }
+         return;
+         */
+   }
+   private void execute_move(Direction dir){
          if(dir == null){
             return;
          }
@@ -265,47 +307,7 @@ public class Window implements ActionListener{
                this.button_right.doClick(100);
                break;
          }
-         this.game.user_undo(); // removes the last entry
          return;
-      }
-      else if("undo all".equals(event.getActionCommand())){
-         while(!this.game.is_original_puzzle()){
-            this.actionPerformed(new ActionEvent(this, 1001, "undo"));
-            this.animate(dir, 100);
-         }
-         return;
-      }
-      else if("solve".equals(event.getActionCommand())){
-         LinkedList<Direction> solution = this.game.user_solve();
-         System.out.printf("Solved\n");
-         while(solution.size() > 0){
-            this.game.user_move(solution.remove(0));
-            this.renderer.update_game_state(this.game);
-            this.draw_frame();
-            this.animate(dir, 1000);
-         }
-         valid = true;
-      }
-      if(valid){
-         this.renderer.update_game_state(this.game);
-         this.animate(dir, 100);
-         this.button_up.setLocation(this.button_dir_pos(Direction.UP, 1));
-         this.button_down.setLocation(this.button_dir_pos(Direction.DOWN, 1));
-         this.button_left.setLocation(this.button_dir_pos(Direction.LEFT, 1));
-         this.button_right.setLocation(this.button_dir_pos(Direction.RIGHT, 1));
-         this.draw_frame();
-      }
-      return;
-   }
-   private void handle_undo_all(){
-      /*
-         while(this.game.user_undo()){
-         this.renderer.update_game_state(this.game);
-         this.draw_frame();
-         this.animate(null, 500);
-         }
-         return;
-         */
    }
 }
 
