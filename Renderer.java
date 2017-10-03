@@ -14,6 +14,7 @@ public class Renderer extends JPanel {
 	
    private Gui_tile[] tile_arr;
    private Dimension size;
+   // empty_index is the linear index of the empty tile
    private int empty_index;
    private int width;
    private int height;
@@ -56,10 +57,47 @@ public class Renderer extends JPanel {
       coord[1] = get_empty_index()/this.height;
       return coord;
    }
-   public int get_adjacent_index(Direction dir){
+   public void move_tile(Direction dir){
+      Direction inv_dir = null;
+      switch(dir){
+         case UP:
+            inv_dir = Direction.DOWN;
+            break;
+         case DOWN:
+            inv_dir = Direction.UP;
+            break;
+         case LEFT:
+            inv_dir = Direction.RIGHT;
+            break;
+         case RIGHT:
+            inv_dir = Direction.LEFT;
+            break;
+      }
+
+      this.get_adjacent_tile(inv_dir).move(dir);
+      return;
+   }
+   public Gui_tile get_adjacent_tile(Direction dir){
       // the swapped will be somewhere relative to the empty
       System.out.printf("adjacent %d", this.tile_arr[this.get_empty_index()].get_index_adjacent(dir, 4));
-      return this.tile_arr[this.get_empty_index()].get_index_adjacent(dir, 4);
+      // get the linear tile index of the tile to move
+      int index = this.empty_index;
+      // doesn't handle edges at all, don't mess up
+      switch(dir){
+         case UP:
+            index += -this.width;
+            break;
+         case DOWN:
+            index += this.width;
+            break;
+         case RIGHT:
+            index += 1;
+            break;
+         case LEFT:
+            index += -1;
+            break;
+      }
+      return this.tile_arr[index];
    }
 
 	@Override

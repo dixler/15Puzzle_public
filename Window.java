@@ -92,7 +92,6 @@ public class Window extends JFrame implements ActionListener{
    private void draw_frame(){
       // update the game state so that everything is up to date
       // when we start drawing
-      this.renderer.update_game_state(this.game);
 
       this.app_frame.add(this.button_up);
          this.button_up.setLocation(this.button_dir_pos(Direction.UP, 1));
@@ -117,11 +116,6 @@ public class Window extends JFrame implements ActionListener{
       this.app_frame.revalidate();
       this.app_frame.paint((Graphics2D)this.app_frame.getGraphics());
       this.app_frame.repaint();
-
-      // handle popups
-      if(this.game.is_solved()){
-         JOptionPane.showMessageDialog(this, "Congratulations! You solved the puzzle!");
-      }
    }
 
    public Window(Game my_game){
@@ -158,22 +152,22 @@ public class Window extends JFrame implements ActionListener{
          // animate moves the tile in the opposite direction
          dir = Direction.DOWN;   // the tile we're moving is going 
                                  // in the opposite direction
-         this.animate_move(dir, 100);
          this.game.user_move(Direction.UP);
+         this.animate_move(dir, 100);
          valid = true;
       }
       else if("DOWN".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
          dir = Direction.UP;
-         this.animate_move(dir, 100);
          this.game.user_move(Direction.DOWN);
+         this.animate_move(dir, 100);
          valid = true;
       }
       else if("RIGHT".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
          dir = Direction.LEFT;
-         this.animate_move(dir, 100);
          this.game.user_move(Direction.RIGHT);
+         this.animate_move(dir, 100);
          valid = true;
       }
       else if("LEFT".equals(event.getActionCommand())){
@@ -185,22 +179,18 @@ public class Window extends JFrame implements ActionListener{
       }
       else if("about".equals(event.getActionCommand())){
          JOptionPane.showMessageDialog(this, "Author: Kyle Dixler\nDate Written: 10/3/2017\nThe 2nd programming assignment for CS 342\n");
-         return;
       }
       else if("help".equals(event.getActionCommand())){
          JOptionPane.showMessageDialog(this, "This is the 15 puzzle, you need to organize the pattern into an ascending order from 1-15");
-         return;
       }
       else if("quit".equals(event.getActionCommand())){
          this.app_frame.setVisible(false);
          this.app_frame.dispose();
          this.dispose();
-         return;
       }
       else if("undo".equals(event.getActionCommand())){
-         this.execute_move(this.game.user_undo(), 250);
+         this.execute_move(this.game.user_undo(), 100);
          this.game.user_undo(); // removes the last entry
-         return;
       }
       else if("undo all".equals(event.getActionCommand())){
          // while we haven't reverted the puzzle to its original one
@@ -208,18 +198,21 @@ public class Window extends JFrame implements ActionListener{
          while(!this.game.is_original_puzzle()){
             this.actionPerformed(new ActionEvent(this, 1001, "undo"));
          }
-         return;
       }
       else if("solve".equals(event.getActionCommand())){
          LinkedList<Direction> solution = this.game.user_solve();
          System.out.printf("Solved\n");
          while(solution.size() > 0){
             this.renderer.print_board();
-            this.execute_move(solution.remove(0),1000);
+            this.execute_move(solution.remove(0),100);
             this.renderer.print_board();
          }
-         return;
       }
+      // handle popups
+      if(this.game.is_solved()){
+         JOptionPane.showMessageDialog(this, "Congratulations! You solved the puzzle!");
+      }
+      this.renderer.update_game_state(this.game);
       this.draw_frame();
       return;
    }
@@ -227,7 +220,14 @@ public class Window extends JFrame implements ActionListener{
          if(dir == null){
             return;
          }
-         this.renderer.move(dir);
+         long time = System.currentTimeMillis();
+         for(int i = 0; i < this.size.getHeight(); i++){
+            while( anim_time != 0 && System.currentTimeMillis() - time < 1000/anim_time){
+            }
+            time = System.currentTimeMillis();
+            this.renderer.move_tile(dir);
+            this.draw_frame();
+         }
          return;
    }
    private void execute_move(Direction dir, int anim_time){

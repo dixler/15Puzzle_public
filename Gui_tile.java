@@ -66,10 +66,10 @@ public class Gui_tile{
             this.position.setLocation(this.position.x, this.position.y+1);
             break;
          case RIGHT:
-            this.position.setLocation(this.position.x-1, this.position.y);
+            this.position.setLocation(this.position.x+1, this.position.y);
             break;
          case LEFT:
-            this.position.setLocation(this.position.x+1, this.position.y);
+            this.position.setLocation(this.position.x-1, this.position.y);
             break;
       }
    }
