@@ -38,6 +38,10 @@ public class Game{
       return this.undo_list.isEmpty();
    }
 
+   public boolean is_solved(){
+      return this.my_solver.is_solved(this.board);
+   }
+
    // pop the last element of the undo list for the gui to handle
    public Direction user_undo(){
       // swap by the reverse of the undo list
