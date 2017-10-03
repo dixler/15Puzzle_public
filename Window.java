@@ -9,7 +9,7 @@ public class Window extends JFrame implements ActionListener{
    private Game game;
 
    private Gui_button button_up, button_down, button_left, button_right; 
-   private JButton button_undo, button_undo_all, button_solve;
+   private JButton button_undo, button_undo_all, button_solve, button_quit;
 
    // holds the size of the tiles
    private Dimension size;
@@ -65,6 +65,13 @@ public class Window extends JFrame implements ActionListener{
          this.button_solve.setSize(size.width, size.height/2);
          this.button_solve.addActionListener(this);
          this.button_solve.setLocation(this.button_pos(2, 5));
+
+      this.button_quit = new JButton();
+         this.button_quit.setActionCommand("quit");
+         this.button_quit.setText("quit");
+         this.button_quit.setSize(size.width, size.height/2);
+         this.button_quit.addActionListener(this);
+         this.button_quit.setLocation(this.button_pos(3, 5));
    }
 
    private void draw_frame(){
@@ -88,13 +95,15 @@ public class Window extends JFrame implements ActionListener{
       this.app_frame.add(this.button_undo);
       this.app_frame.add(this.button_undo_all);
       this.app_frame.add(this.button_solve);
+      this.app_frame.add(this.button_quit);
       this.app_frame.add(this.renderer);
       this.app_frame.revalidate();
+      this.app_frame.paint((Graphics2D)this.app_frame.getGraphics());
       this.app_frame.repaint();
 
       // handle popups
       if(this.game.is_solved()){
-         JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
+         JOptionPane.showMessageDialog(this, "Congratulations! You solved the puzzle!");
       }
    }
 
@@ -151,6 +160,12 @@ public class Window extends JFrame implements ActionListener{
          dir = Direction.RIGHT;
          this.game.user_move(Direction.LEFT);
          valid = true;
+      }
+      else if("quit".equals(event.getActionCommand())){
+         this.app_frame.setVisible(false);
+         this.app_frame.dispose();
+         this.dispose();
+         return;
       }
       else if("undo".equals(event.getActionCommand())){
          this.execute_move(this.game.user_undo(), 250);

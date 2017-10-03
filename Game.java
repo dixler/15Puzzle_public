@@ -15,7 +15,7 @@ public class Game{
       // now shuffle the board
             int successful_swaps = 0;
 
-      this.board.shuffle();
+      //this.board.shuffle();
       this.board.print_board();
    }
 
