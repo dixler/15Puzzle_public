@@ -13,7 +13,7 @@ public class Gui_tile{
    public Gui_tile(Tile tile, Dimension size, int buffer_width){
       this.tile = tile.clone();
       this.icon = new Rectangle();
-      this.label = new String(Integer.toString(tile.index()));
+      this.label = new String(Integer.toString(tile.index()+1));
 
       this.size = size;
       this.icon.setSize(this.size);

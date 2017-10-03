@@ -8,8 +8,9 @@ public class Window extends JFrame implements ActionListener{
    private Renderer renderer;
    private Game game;
 
-   private Gui_button button_up, button_down, button_left, button_right; 
-   private JButton button_undo, button_undo_all, button_solve, button_quit;
+   private Gui_button   button_up, button_down, button_left, button_right; 
+   private JButton   button_undo, button_undo_all, button_solve, button_quit,
+                     button_about, button_help;
 
    // holds the size of the tiles
    private Dimension size;
@@ -72,6 +73,20 @@ public class Window extends JFrame implements ActionListener{
          this.button_quit.setSize(size.width, size.height/2);
          this.button_quit.addActionListener(this);
          this.button_quit.setLocation(this.button_pos(3, 5));
+
+      this.button_about = new JButton();
+         this.button_about.setActionCommand("about");
+         this.button_about.setText("about");
+         this.button_about.setSize(size.width, size.height/2);
+         this.button_about.addActionListener(this);
+         this.button_about.setLocation(this.button_pos(0, 6));
+
+      this.button_help = new JButton();
+         this.button_help.setActionCommand("help");
+         this.button_help.setText("help");
+         this.button_help.setSize(size.width, size.height/2);
+         this.button_help.addActionListener(this);
+         this.button_help.setLocation(this.button_pos(1, 6));
    }
 
    private void draw_frame(){
@@ -96,6 +111,8 @@ public class Window extends JFrame implements ActionListener{
       this.app_frame.add(this.button_undo_all);
       this.app_frame.add(this.button_solve);
       this.app_frame.add(this.button_quit);
+      this.app_frame.add(this.button_about);
+      this.app_frame.add(this.button_help);
       this.app_frame.add(this.renderer);
       this.app_frame.revalidate();
       this.app_frame.paint((Graphics2D)this.app_frame.getGraphics());
@@ -160,6 +177,14 @@ public class Window extends JFrame implements ActionListener{
          dir = Direction.RIGHT;
          this.game.user_move(Direction.LEFT);
          valid = true;
+      }
+      else if("about".equals(event.getActionCommand())){
+         JOptionPane.showMessageDialog(this, "Author: Kyle Dixler\nDate Written: 10/3/2017\nThe 2nd programming assignment for CS 342\n");
+         return;
+      }
+      else if("help".equals(event.getActionCommand())){
+         JOptionPane.showMessageDialog(this, "This is the 15 puzzle, you need to organize the pattern into an ascending order from 1-15");
+         return;
       }
       else if("quit".equals(event.getActionCommand())){
          this.app_frame.setVisible(false);
