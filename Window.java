@@ -191,6 +191,7 @@ public class Window extends JFrame implements ActionListener{
       else if("undo".equals(event.getActionCommand())){
          this.execute_move(this.game.user_undo(), 100);
          this.game.user_undo(); // removes the last entry
+         return;
       }
       else if("undo all".equals(event.getActionCommand())){
          // while we haven't reverted the puzzle to its original one
@@ -198,6 +199,7 @@ public class Window extends JFrame implements ActionListener{
          while(!this.game.is_original_puzzle()){
             this.actionPerformed(new ActionEvent(this, 1001, "undo"));
          }
+         return;
       }
       else if("solve".equals(event.getActionCommand())){
          LinkedList<Direction> solution = this.game.user_solve();
@@ -207,6 +209,7 @@ public class Window extends JFrame implements ActionListener{
             this.execute_move(solution.remove(0),100);
             this.renderer.print_board();
          }
+         return;
       }
       // handle popups
       if(this.game.is_solved()){
