@@ -156,25 +156,30 @@ public class Window extends JFrame implements ActionListener{
       System.out.printf("actionPerformed %s\n", event.getSource());
       if("UP".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
-         dir = Direction.DOWN;
+         dir = Direction.DOWN;   // the tile we're moving is going 
+                                 // in the opposite direction
+         this.animate_move(dir, 100);
          this.game.user_move(Direction.UP);
          valid = true;
       }
       else if("DOWN".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
          dir = Direction.UP;
+         this.animate_move(dir, 100);
          this.game.user_move(Direction.DOWN);
          valid = true;
       }
       else if("RIGHT".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
          dir = Direction.LEFT;
+         this.animate_move(dir, 100);
          this.game.user_move(Direction.RIGHT);
          valid = true;
       }
       else if("LEFT".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
          dir = Direction.RIGHT;
+         this.animate_move(dir, 100);
          this.game.user_move(Direction.LEFT);
          valid = true;
       }
@@ -217,6 +222,13 @@ public class Window extends JFrame implements ActionListener{
       }
       this.draw_frame();
       return;
+   }
+   private void animate_move(Direction dir, int anim_time){
+         if(dir == null){
+            return;
+         }
+         this.renderer.move(dir);
+         return;
    }
    private void execute_move(Direction dir, int anim_time){
          if(dir == null){
