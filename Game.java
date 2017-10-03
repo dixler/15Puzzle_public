@@ -14,37 +14,6 @@ public class Game{
       this.my_solver = new Solver(this.board);
       // now shuffle the board
             int successful_swaps = 0;
-      /*
-      for(int i = 0; i < 15; i++){
-         Random rand = new Random();
-         switch(rand.nextInt() % 4){
-            case 0:
-               if(this.board.swap(Direction.UP)){
-                  successful_swaps++;
-                  break;
-               }
-            case 1:
-               if(this.board.swap(Direction.DOWN)){
-                  successful_swaps++;
-                  break;
-               }
-               break;
-            case 2:
-               if(this.board.swap(Direction.LEFT)){
-                  successful_swaps++;
-                  break;
-               }
-            case 3:
-               if(this.board.swap(Direction.RIGHT)){
-                  successful_swaps++;
-                  break;
-               }
-               break;
-         }
-      }
-      System.out.printf("Swap count: %d\n", successful_swaps);
-      System.out.printf("Complexity: %d\n", this.board.get_complexity());
-      //*/
 
       this.board.shuffle();
       this.board.print_board();
