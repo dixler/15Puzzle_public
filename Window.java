@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Window implements ActionListener{
+public class Window extends JFrame implements ActionListener{
    private JFrame app_frame;
    private Renderer renderer;
    private Game game;
@@ -90,8 +90,12 @@ public class Window implements ActionListener{
       this.app_frame.add(this.button_solve);
       this.app_frame.add(this.renderer);
       this.app_frame.revalidate();
-      this.app_frame.paint((Graphics2D)this.app_frame.getGraphics());
       this.app_frame.repaint();
+
+      // handle popups
+      if(this.game.is_solved()){
+         JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
+      }
    }
 
    public Window(Game my_game){
