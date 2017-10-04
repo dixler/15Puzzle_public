@@ -81,7 +81,10 @@ public class Gui extends JFrame implements ActionListener{
          return;
       }
       else if("help".equals(event.getActionCommand())){
-         JOptionPane.showMessageDialog(this, "This is the 15 puzzle, you need to organize the pattern into an ascending order from 1-15\nThe top row should read 1 2 3 4\nThe bottom row should read 13 14 15\n with the empty space in the bottom right-hand corner.");
+         JOptionPane.showMessageDialog(this, " This is the 15 puzzle, you need to organize the pattern into \n an ascending order from 1-15.  To do this, you can only click \n the tiles next to the empty space to move them into the empty \n space. \n The top row should read [1] [2] [3] [4].\n The bottom row should read [13] [14] [15] [empty space]\n ");
+         /*
+This is the 15 puzzle, you need to organize the pattern into \n an ascending order from 1-15.  To do this, you can only click \n the tiles next to the empty space to move them into the empty \n space. \n The top row should read [1] [2] [3] [4].\n The bottom row should read [13] [14] [15] [empty space]\n
+*/
          return;
       }
       else if("quit".equals(event.getActionCommand())){
