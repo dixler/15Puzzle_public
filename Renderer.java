@@ -120,10 +120,10 @@ public class Renderer extends JPanel {
          }
          else{
             drawing_context.setColor(new Color(0,155,0));
-            if(using_image) drawing_context.setPaint(new TexturePaint(this.img_arr[this.tile_arr[i].get_index()], this.tile_arr[i].get_icon()));
+            if(using_image)drawing_context.setPaint(new TexturePaint(this.img_arr[this.tile_arr[i].get_index()], this.tile_arr[i].get_icon()));
             drawing_context.fill(this.tile_arr[i].get_icon());
             drawing_context.setColor(new Color(255,255,255));
-            drawing_context.drawString(this.tile_arr[i].get_label(), 
+            if(!using_image)drawing_context.drawString(this.tile_arr[i].get_label(), 
                                        this.tile_arr[i].get_x_center(), 
                                        this.tile_arr[i].get_y_center());
          }
