@@ -34,7 +34,6 @@ public class Renderer extends JPanel {
       }
 	}
    public void update_game_state(Game game){
-      System.out.printf("state updated\n");
       this.tile_arr = new Gui_tile[game.get_board().num_tiles()];
       Tile[] tiles = game.get_tiles();
       for(int i = 0; i < tiles.length; i++){
@@ -50,39 +49,17 @@ public class Renderer extends JPanel {
       // the swapped will be somewhere relative to the empty
       return this.empty_index;
    }
-   public int[] get_empty_index2d(){
-      // the swapped will be somewhere relative to the empty
-      int[] coord = new int[2];
-      coord[0] = get_empty_index()%this.width;
-      coord[1] = get_empty_index()/this.height;
-      return coord;
-   }
    public void move_tile(Direction.dir dir){
-      Direction.dir inv_dir = null;
-      switch(dir){
-         case UP:
-            inv_dir = Direction.dir.DOWN;
-            break;
-         case DOWN:
-            inv_dir = Direction.dir.UP;
-            break;
-         case LEFT:
-            inv_dir = Direction.dir.RIGHT;
-            break;
-         case RIGHT:
-            inv_dir = Direction.dir.LEFT;
-            break;
-      }
-
-      this.get_adjacent_tile(inv_dir).move(dir);
+      this.get_adjacent_tile(Direction.invert(dir)).move(dir);
       return;
    }
+   // doesn't handle edges at all, don't mess up
    public Gui_tile get_adjacent_tile(Direction.dir dir){
       // the swapped will be somewhere relative to the empty
-      System.out.printf("adjacent %d", this.tile_arr[this.get_empty_index()].get_index_adjacent(dir, 4));
-      // get the linear tile index of the tile to move
       int index = this.empty_index;
-      // doesn't handle edges at all, don't mess up
+      if(dir == Direction.dir.RIGHT && (index % width == width - 1)) return null;
+
+      // get the linear tile index of the tile to move
       switch(dir){
          case UP:
             index += -this.width;
@@ -102,7 +79,6 @@ public class Renderer extends JPanel {
 
 	@Override
    public void paintComponent(Graphics g) {  
-      System.out.printf("repainting\n");
       Random rand = new Random();
       Graphics2D drawing_context = (Graphics2D) g;
       drawing_context.setFont(new Font("TimesRoman", Font.PLAIN, 36)); 
@@ -119,14 +95,6 @@ public class Renderer extends JPanel {
          }
       }
       return;
-   }
-   public void print_board(){
-      if(this.tile_arr == null)
-         return;
-      System.out.printf("Tile\tx\ty\n");
-      for(int i = 0; i < this.tile_arr.length; i++){
-         System.out.printf("%s\t%d\t%d\n", this.tile_arr[i].get_label(), this.tile_arr[i].get_x(), this.tile_arr[i].get_y());
-      }
    }
 }
 

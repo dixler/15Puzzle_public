@@ -1,9 +1,9 @@
 import java.util.*;
 public class Solver{
    Hashtable<Board, Board> graph;
-   Node solution_set;
    ArrayList<Node> list_queue;
    Board target;
+   // holds our nodes for recycling
    Node_pool pool;
 
    public Solver(Board target){
@@ -40,12 +40,6 @@ public class Solver{
          // get the next node to inspect
          Node cur_node = this.list_queue.remove(0);
 
-
-/*
-System.out.printf("exploring\n");
-cur_node.get_board().print_board();
-//*/
-
          // check if the node is solved
          if(this.target.equals(cur_node.get_board())){
             return cur_node;
@@ -59,15 +53,13 @@ cur_node.get_board().print_board();
                      this.list_queue.add(next_node);
                   }
                   else{
-                     pool.return_node(next_node);
+                     this.pool.return_node(next_node);
                   }
             }
          }
-         pool.return_node(cur_node);
+         this.pool.return_node(cur_node);
       }
       
       return null;
    }
-
-
 }

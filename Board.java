@@ -72,10 +72,8 @@ public class Board{
       int inversions = 0;
       // traverse all of the squares
       for(int i = 0; i < width*height; i++){
-//System.out.printf("%d comparing against\n", board[i%width][i/height].index());
          for(int j = i+1; j < width*height; j++){
             if(board[i%width][i/height].index() > board[j%width][j/height].index()){
-//System.out.printf("%d\n", board[j%width][j/height].index());
                inversions += 1;
             }
          }
@@ -121,31 +119,10 @@ public class Board{
       for(char cur_y = 0; cur_y < this.height; cur_y++){
          for(char cur_x = 0; cur_x < this.width; cur_x++){
             System.out.printf("%d\t", this.board[cur_x][cur_y].index());
-
-/*
-System.out.printf("%d\t", this.board[cur_x][cur_y].index());
-System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y());
-//*/
          }
          System.out.printf("\n");
       }
       System.out.printf("\n");
-   }
-   public void DEBUG_TILE_print_board(){
-      Tile[][] board = new Tile[4][4];
-      for(char cur_y = 0; cur_y < this.height; cur_y++){
-         for(char cur_x = 0; cur_x < this.width; cur_x++){
-            Tile cur_tile = this.board[cur_x][cur_y];
-            System.out.printf("%d [%d][%d]\t", board[cur_x][cur_y].index(), board[cur_x][cur_y].x(), board[cur_x][cur_y].y());
-            board[cur_tile.x()][cur_tile.y()] = cur_tile;
-         }
-      }
-      for(char cur_y = 0; cur_y < this.height; cur_y++){
-         for(char cur_x = 0; cur_x < this.width; cur_x++){
-            System.out.printf("%d\t", board[cur_x][cur_y].index());
-         }
-         System.out.printf("\n");
-      }
    }
 
    //swap the empty space with the slot to the [UP/DOWN/LEFT/RIGHT] returns TRUE if successful
@@ -154,20 +131,16 @@ System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y()
       // check if move is out of bounds
       switch(move){
          case UP:
-            if(empty_coord[1] == 0)
-               return false;
+            if(empty_coord[1] == 0) return false;
             break;
          case DOWN:
-            if(empty_coord[1] == (height-1))
-               return false;
+            if(empty_coord[1] == (height-1)) return false;
             break;
          case LEFT:
-            if(empty_coord[0] == 0)
-               return false;
+            if(empty_coord[0] == 0) return false;
             break;
          case RIGHT:
-            if(empty_coord[0] == (width-1))
-               return false;
+            if(empty_coord[0] == (width-1)) return false;
             break;
       }
       char[] adj_indx = this.get_adj_tile_index(move);

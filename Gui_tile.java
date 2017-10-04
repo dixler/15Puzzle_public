@@ -25,13 +25,7 @@ public class Gui_tile{
       this.icon.setLocation(this.position);
    }
    public Rectangle get_icon(){
-         // the rectangle has been modified
-         /*
-         this.icon.setLocation(  this.tile.x()*((int)this.icon.getWidth() + this.buffer_width),
-                                 this.tile.y()*((int)this.icon.getHeight() + this.buffer_width));
-         */
-         this.icon.setLocation(this.position);
-         //this.icon.setSize(this.size);
+      this.icon.setLocation(this.position);
       return this.icon;
    }
    public String get_label(){
@@ -80,9 +74,7 @@ public class Gui_tile{
       return position.y+size.height/2;
    }
    public void set_size(Dimension size){
-         // the rectangle has been modified
-         this.size = size;
-         return;
+      this.size = size;
+      return;
    }
-
 }

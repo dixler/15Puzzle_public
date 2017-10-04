@@ -46,52 +46,15 @@ public class Window extends JFrame implements ActionListener{
          this.button_right.setLocation(this.button_dir_pos(Direction.dir.RIGHT, 1));
 
       // handle menu buttons
-      this.button_undo = new JButton();
-         this.button_undo.setActionCommand("undo");
-         this.button_undo.setText("undo");
-         this.button_undo.setSize(size.width, size.height/2);
-         this.button_undo.addActionListener(this);
-         this.button_undo.setLocation(this.button_pos(0, 5));
-
-      this.button_undo_all = new JButton();
-         this.button_undo_all.setActionCommand("undo all");
-         this.button_undo_all.setText("undo all");
-         this.button_undo_all.setSize(size.width, size.height/2);
-         this.button_undo_all.addActionListener(this);
-         this.button_undo_all.setLocation(this.button_pos(1, 5));
-
-      this.button_solve = new JButton();
-         this.button_solve.setActionCommand("solve");
-         this.button_solve.setText("solve");
-         this.button_solve.setSize(size.width, size.height/2);
-         this.button_solve.addActionListener(this);
-         this.button_solve.setLocation(this.button_pos(2, 5));
-
-      this.button_quit = new JButton();
-         this.button_quit.setActionCommand("quit");
-         this.button_quit.setText("quit");
-         this.button_quit.setSize(size.width, size.height/2);
-         this.button_quit.addActionListener(this);
-         this.button_quit.setLocation(this.button_pos(3, 5));
-
-      this.button_about = new JButton();
-         this.button_about.setActionCommand("about");
-         this.button_about.setText("about");
-         this.button_about.setSize(size.width, size.height/2);
-         this.button_about.addActionListener(this);
-         this.button_about.setLocation(this.button_pos(0, 6));
-
-      this.button_help = new JButton();
-         this.button_help.setActionCommand("help");
-         this.button_help.setText("help");
-         this.button_help.setSize(size.width, size.height/2);
-         this.button_help.addActionListener(this);
-         this.button_help.setLocation(this.button_pos(1, 6));
+      this.button_undo = this.create_menu_button("undo", 0, 5);
+      this.button_undo_all = this.create_menu_button("undo all", 1, 5);
+      this.button_solve = this.create_menu_button("solve", 2, 5);
+      this.button_quit = this.create_menu_button("quit", 3, 5);
+      this.button_about = this.create_menu_button("about", 0, 6);
+      this.button_help = this.create_menu_button("help", 1, 6);
    }
 
    private void draw_frame(){
-      // update the game state so that everything is up to date
-      // when we start drawing
 
       this.app_frame.add(this.button_up);
          this.button_up.setLocation(this.button_dir_pos(Direction.dir.UP, 1));
@@ -104,7 +67,6 @@ public class Window extends JFrame implements ActionListener{
 
       this.app_frame.add(this.button_right);
          this.button_right.setLocation(this.button_dir_pos(Direction.dir.RIGHT, 1));
-
 
       this.app_frame.add(this.button_undo);
       this.app_frame.add(this.button_undo_all);
@@ -147,34 +109,33 @@ public class Window extends JFrame implements ActionListener{
       int button_offset = this.size.width; // height and width are the same
       boolean valid = false;
       Direction.dir dir = null;
-      System.out.printf("actionPerformed %s\n", event.getSource());
       if("UP".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
          dir = Direction.dir.DOWN;   // the tile we're moving is going 
                                  // in the opposite direction
-         this.game.user_move(Direction.dir.UP);
-         this.animate_move(dir, 100);
+         this.game.user_move(Direction.invert(dir));
+         this.animate_move(dir, 10);
          valid = true;
       }
       else if("DOWN".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
          dir = Direction.dir.UP;
-         this.game.user_move(Direction.dir.DOWN);
-         this.animate_move(dir, 100);
+         this.game.user_move(Direction.invert(dir));
+         this.animate_move(dir, 10);
          valid = true;
       }
       else if("RIGHT".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
          dir = Direction.dir.LEFT;
-         this.game.user_move(Direction.dir.RIGHT);
-         this.animate_move(dir, 100);
+         this.game.user_move(Direction.invert(dir));
+         this.animate_move(dir, 10);
          valid = true;
       }
       else if("LEFT".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
          dir = Direction.dir.RIGHT;
-         this.animate_move(dir, 100);
-         this.game.user_move(Direction.dir.LEFT);
+         this.animate_move(dir, 10);
+         this.game.user_move(Direction.invert(dir));
          valid = true;
       }
       else if("about".equals(event.getActionCommand())){
@@ -189,7 +150,7 @@ public class Window extends JFrame implements ActionListener{
          this.dispose();
       }
       else if("undo".equals(event.getActionCommand())){
-         this.execute_move(this.game.user_undo(), 100);
+         this.execute_move(this.game.user_undo(), 10);
          this.game.user_undo(); // removes the last entry
          return;
       }
@@ -205,9 +166,7 @@ public class Window extends JFrame implements ActionListener{
          LinkedList<Direction.dir> solution = this.game.user_solve();
          System.out.printf("Solved\n");
          while(solution.size() > 0){
-            this.renderer.print_board();
-            this.execute_move(solution.remove(0),100);
-            this.renderer.print_board();
+            this.execute_move(solution.remove(0),10);
          }
          return;
       }
@@ -220,13 +179,10 @@ public class Window extends JFrame implements ActionListener{
       return;
    }
    private void animate_move(Direction.dir dir, int anim_time){
-         if(dir == null){
-            return;
-         }
+         if(dir == null) return;
          long time = System.currentTimeMillis();
          for(int i = 0; i < this.size.getHeight(); i++){
-            while( anim_time != 0 && System.currentTimeMillis() - time < 1000/anim_time){
-            }
+            while( anim_time != 0 && System.currentTimeMillis() - time < anim_time);
             time = System.currentTimeMillis();
             this.renderer.move_tile(dir);
             this.draw_frame();
@@ -234,9 +190,7 @@ public class Window extends JFrame implements ActionListener{
          return;
    }
    private void execute_move(Direction.dir dir, int anim_time){
-         if(dir == null){
-            return;
-         }
+         if(dir == null) return;
          // doClick's argument acts as a delay
          switch(dir){
             case UP:
@@ -273,9 +227,16 @@ public class Window extends JFrame implements ActionListener{
       }
       return null;
    }
-
    private Point button_pos(int offset_x, int offset_y){
       return new Point(offset_x*(this.size.width+10), offset_y*(this.size.height+10));
    }
+   private JButton create_menu_button(String label, int x_pos, int y_pos){
+      JButton button = new JButton();
+      button.setActionCommand(label);
+      button.setText(label);
+      button.setSize(size.width, size.height/2);
+      button.addActionListener(this);
+      button.setLocation(this.button_pos(x_pos, y_pos));
+      return button;
+   }
 }
-
