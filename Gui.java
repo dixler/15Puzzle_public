@@ -2,9 +2,14 @@ import java.util.LinkedList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+/*
+ * PURPOSE: Graphical implementation of Game
+ *          works to display the board in tiles
+ *          in conjuction with the Renderer class
+ */
 
 @SuppressWarnings("serial")
-public class Window extends JFrame implements ActionListener{
+public class Gui extends JFrame implements ActionListener{
    private Renderer renderer;
    private Game game;
 
@@ -19,7 +24,15 @@ public class Window extends JFrame implements ActionListener{
    // tracks the empty position location for rendering the buttons relative to it
    private Point empty_pos;
 
-   public Window(Game my_game){
+
+/*           _     _ _      
+ _ __  _   _| |__ | (_) ___ 
+| '_ \| | | | '_ \| | |/ __|
+| |_) | |_| | |_) | | | (__ 
+| .__/ \__,_|_.__/|_|_|\___|
+|_|                         */
+
+   public Gui(Game my_game){
       this.game = my_game;
       this.buffer_size = 10;
 
@@ -42,34 +55,8 @@ public class Window extends JFrame implements ActionListener{
       this.initialize_buttons();
       this.draw_frame();
    }
-   // handle all of the rendering
-   private void draw_frame(){
 
-      this.add(this.button_up);
-         this.button_up.setLocation(this.button_dir_pos(Direction.dir.UP, 1));
-
-      this.add(this.button_down);
-         this.button_down.setLocation(this.button_dir_pos(Direction.dir.DOWN, 1));
-
-      this.add(this.button_left);
-         this.button_left.setLocation(this.button_dir_pos(Direction.dir.LEFT, 1));
-
-      this.add(this.button_right);
-         this.button_right.setLocation(this.button_dir_pos(Direction.dir.RIGHT, 1));
-
-      this.add(this.button_undo);
-      this.add(this.button_undo_all);
-      this.add(this.button_solve);
-      this.add(this.button_quit);
-      this.add(this.button_about);
-      this.add(this.button_help);
-      this.add(this.renderer);
-      this.paint(this.getGraphics());
-      this.revalidate();
-      this.repaint();
-   }
-
-
+   // action handler. Does all of the main gamework.
    public void actionPerformed(ActionEvent event) {
       int button_offset = this.size.width; // height and width are the same
       if("UP".equals(event.getActionCommand())){
@@ -130,6 +117,36 @@ public class Window extends JFrame implements ActionListener{
       this.draw_frame();
       return;
    }
+/*          _            _       
+ _ __  _ __(_)_   ____ _| |_ ___ 
+| '_ \| '__| \ \ / / _` | __/ _ \
+| |_) | |  | |\ V / (_| | ||  __/
+| .__/|_|  |_| \_/ \__,_|\__\___|
+|_|                              */
+   // handle all of the rendering
+   private void draw_frame(){
+      this.add(this.button_up);
+         this.button_up.setLocation(this.button_dir_pos(Direction.dir.UP, 1));
+
+      this.add(this.button_down);
+         this.button_down.setLocation(this.button_dir_pos(Direction.dir.DOWN, 1));
+
+      this.add(this.button_left);
+         this.button_left.setLocation(this.button_dir_pos(Direction.dir.LEFT, 1));
+
+      this.add(this.button_right);
+         this.button_right.setLocation(this.button_dir_pos(Direction.dir.RIGHT, 1));
+      this.add(this.button_undo);
+      this.add(this.button_undo_all);
+      this.add(this.button_solve);
+      this.add(this.button_quit);
+      this.add(this.button_about);
+      this.add(this.button_help);
+      this.add(this.renderer);
+      this.paint(this.getGraphics());
+      this.revalidate();
+      this.repaint();
+   }
    // serves to call the animation subroutine and 
    private void animate_move(Direction.dir dir, int anim_time){
          if(dir == null) return;
@@ -147,6 +164,7 @@ public class Window extends JFrame implements ActionListener{
                                                       // moves relative to the empty space
          return;
    }
+   // Called by undo and solver to perform moves
    private void execute_move(Direction.dir dir, int anim_time){
          if(dir == null) return;
          // doClick's argument acts as a delay to avoid extra
@@ -167,7 +185,7 @@ public class Window extends JFrame implements ActionListener{
          }
          return;
    }
-   // determines the position of the move issuing buttons
+   // determines the position of the move issuing hidden buttons
    private Point button_dir_pos(Direction.dir dir, int offset){
       Point origin = new Point(  this.game.get_empty_pos()[0]*(this.size.width+this.buffer_size), 
                                  this.game.get_empty_pos()[1]*(this.size.height+this.buffer_size));

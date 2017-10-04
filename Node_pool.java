@@ -1,8 +1,8 @@
 import java.util.*;
 /*
- * This seemed to improve runtime by reducing the number of newly allocated nodes
- * when we're done with a node, we place it in this object. When we want a new node
- * we take it from the pool if the pool is empty, allocate a new node.
+ * PURPOSE: This seemed to improve runtime by reducing the number of newly allocated nodes
+ *          when we're done with a node, we place it in this object. When we want a new node
+ *          we take it from the pool if the pool is empty, allocate a new node.
  */
 import java.util.*;
 public class Node_pool{
@@ -23,7 +23,7 @@ public class Node_pool{
       else{
          // recycle old node
          Node popped = pool.remove(0);
-         popped.move_list = new LinkedList<Direction.dir>();
+         popped.clear_move_list();
          return popped;
       }
    }

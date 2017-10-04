@@ -1,11 +1,25 @@
 import java.util.*;
+/*
+ * PURPOSE: Holds an instance of the solved board and can
+ *          tell the client if the board is solved. Also 
+ *          uses bfs to solve the board when needed. Extremely
+ *          slow.
+ */
 public class Solver{
+   // holds all of our previously traversed nodes
    Hashtable<Board, Board> graph;
    ArrayList<Node> list_queue;
    Board target;
    // holds our nodes for recycling
    Node_pool pool;
 
+/*              _     _ _      
+    _ __  _   _| |__ | (_) ___ 
+   | '_ \| | | | '_ \| | |/ __|
+   | |_) | |_| | |_) | | | (__ 
+   | .__/ \__,_|_.__/|_|_|\___|
+   |_|                         */
+   
    public Solver(Board target){
       this.target = target.clone();
       this.pool = new Node_pool();
@@ -31,8 +45,16 @@ public class Solver{
       // place the current position into the hash table
       this.graph.put(first_node.get_board(), first_node.get_board());
       this.list_queue.add(first_node);
+      // CALL BFS
       return bfs();
    }
+
+/*             _            _       
+    _ __  _ __(_)_   ____ _| |_ ___ 
+   | '_ \| '__| \ \ / / _` | __/ _ \
+   | |_) | |  | |\ V / (_| | ||  __/
+   | .__/|_|  |_| \_/ \__,_|\__\___|
+   |_|                              */
    private Node bfs(){
       // we're at the current position
       // inspect first position in queue

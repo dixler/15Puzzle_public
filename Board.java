@@ -20,8 +20,9 @@ public class Board{
       |_|                         
    */
 
-   // fill the board with tiles(in order) this serves as a base state 
-   // and gives us something to signal the solver as to our goal
+   // Constructor:   fill the board with tiles(in order) this serves as a base state 
+   //                and gives us something to signal the solver as to our target
+   //                board state.
    public Board(char x, char y){
       this.width = x;
       this.height = y;
@@ -59,6 +60,8 @@ public class Board{
 
       return tile_arr;
    }
+   // returns the board's empty position in a 2d array
+   // [0] x [1] y;
    public char[] get_empty_pos(){
       return this.empty_coord;
    }
@@ -69,9 +72,9 @@ public class Board{
       return this.height;
    }
 
+   // returns the number of inversions in the board
    public int get_complexity(){
       int inversions = 0;
-      // traverse all of the squares
       for(int i = 0; i < width*height; i++){
          for(int j = i+1; j < width*height; j++){
             if(board[i%width][i/height].index() > board[j%width][j/height].index()){
@@ -113,17 +116,6 @@ public class Board{
          }
       }while(this.get_complexity() % 2 != 0);
       return;
-   }
-
-   // displays the board to stdout
-   public void print_board(){
-      for(char cur_y = 0; cur_y < this.height; cur_y++){
-         for(char cur_x = 0; cur_x < this.width; cur_x++){
-            System.out.printf("%d\t", this.board[cur_x][cur_y].index());
-         }
-         System.out.printf("\n");
-      }
-      System.out.printf("\n");
    }
 
    //swap the empty space with the slot to the [UP/DOWN/LEFT/RIGHT] returns TRUE if successful
@@ -183,11 +175,23 @@ public class Board{
       return clone;
    }
 
-   /*   ___                      _     _           
-       / _ \__   _____ _ __ _ __(_) __| | ___  ___ 
-      | | | \ \ / / _ \ '__| '__| |/ _` |/ _ \/ __|
-      | |_| |\ V /  __/ |  | |  | | (_| |  __/\__ \
-       \___/  \_/ \___|_|  |_|  |_|\__,_|\___||___/
+   // displays the board to stdout DEBUGGING feature
+   public void print_board(){
+      for(char cur_y = 0; cur_y < this.height; cur_y++){
+         for(char cur_x = 0; cur_x < this.width; cur_x++){
+            System.out.printf("%d\t", this.board[cur_x][cur_y].index());
+         }
+         System.out.printf("\n");
+      }
+      System.out.printf("\n");
+   }
+
+
+   /*   ___                      _     _      
+       / _ \__   _____ _ __ _ __(_) __| | ___ 
+      | | | \ \ / / _ \ '__| '__| |/ _` |/ _ \
+      | |_| |\ V /  __/ |  | |  | | (_| |  __/
+       \___/  \_/ \___|_|  |_|  |_|\__,_|\___|
     */
 
    @Override

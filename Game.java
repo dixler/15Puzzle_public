@@ -1,5 +1,9 @@
 import java.util.LinkedList;
 import java.util.Random;
+/*
+ * PURPOSE: Create a decoupled game representation for possible
+ *          reimplementation in other client functions.
+ */
 public class Game{
    private Board board;
    private Solver my_solver;
@@ -11,6 +15,8 @@ public class Game{
    | |_) | |_| | |_) | | | (__ 
    | .__/ \__,_|_.__/|_|_|\___|
    |_|                         */
+
+   // constructor creates a game of board size
    public Game(int board_size){
       this.board = new Board((char)board_size, (char)board_size);
       this.undo_list = new LinkedList<Direction.dir>();
@@ -20,7 +26,7 @@ public class Game{
       this.my_solver = new Solver(this.board);
 
       // now shuffle the board
-      this.board.shuffle();
+      //this.board.shuffle();
       System.out.printf("Complexity: %d\n", this.board.get_complexity());
    }
 
@@ -46,9 +52,12 @@ public class Game{
    // returns a solution to the current board
    // the client can decide what to do with the solution
    public LinkedList<Direction.dir> user_solve(){
-      return this.my_solver.find_solution(this.board).move_list;
+      return this.my_solver.find_solution(this.board).get_move_list();
    }
 
+   /*
+    * various board state/status functions
+    */
    public boolean is_original_puzzle(){
       return this.undo_list.isEmpty();
    }

@@ -6,8 +6,12 @@ import java.awt.Rectangle;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 
-// HistogramComponent extends the functionality of a JComponent
-// in order to draw a histogram.
+/*
+ * PURPOSE: Renderer holds all of the Gui_tiles and renders them
+ *          it requires game status updates to stay fully up to 
+ *          date
+ */
+
 @SuppressWarnings("serial")
 public class Renderer extends JPanel {
 	
@@ -21,6 +25,13 @@ public class Renderer extends JPanel {
    private int height;
    private int buffer_size;
 	
+   /*           _     _ _      
+    _ __  _   _| |__ | (_) ___ 
+   | '_ \| | | | '_ \| | |/ __|
+   | |_) | |_| | |_) | | | (__ 
+   | .__/ \__,_|_.__/|_|_|\___|
+   |_|                         */
+
 	public Renderer(Game game, Dimension size, int buffer_size){
       this.size = size;
       this.buffer_size = buffer_size;
@@ -53,6 +64,14 @@ public class Renderer extends JPanel {
       tile.move(dir);
       return;
    }
+
+   /*
+     ___                      _     _      
+    / _ \__   _____ _ __ _ __(_) __| | ___ 
+   | | | \ \ / / _ \ '__| '__| |/ _` |/ _ \
+   | |_| |\ V /  __/ |  | |  | | (_| |  __/
+    \___/  \_/ \___|_|  |_|  |_|\__,_|\___|*/
+                                        
 	@Override
    public void paintComponent(Graphics g) {  
       Graphics2D drawing_context = (Graphics2D) g;
@@ -74,10 +93,19 @@ public class Renderer extends JPanel {
       return;
    }
 
+   /*          _            _       
+    _ __  _ __(_)_   ____ _| |_ ___ 
+   | '_ \| '__| \ \ / / _` | __/ _ \
+   | |_) | |  | |\ V / (_| | ||  __/
+   | .__/|_|  |_| \_/ \__,_|\__\___|
+   |_|                              */
+
+   // get the linear index of the empty space
    private int get_empty_index(){
       // the swapped will be somewhere relative to the empty
       return this.empty_index;
    }
+   // get the linear index of the tile adjacent to the empty space
    private Gui_tile get_adjacent_tile(Direction.dir dir){
       // the swapped will be somewhere relative to the empty
       int index = this.empty_index;
