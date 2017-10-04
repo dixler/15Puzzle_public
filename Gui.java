@@ -14,8 +14,8 @@ public class Gui extends JFrame implements ActionListener{
    private Game game;
 
    private Gui_button   button_up, button_down, button_left, button_right; 
-   private JButton   button_undo, button_undo_all, button_solve, button_quit,
-                     button_about, button_help;
+   private JButton   button_undo, button_undo_all, button_solve, button_shuffle,
+                     button_quit, button_about, button_help;
 
    // holds the size of the tiles
    private Dimension size;
@@ -62,16 +62,19 @@ public class Gui extends JFrame implements ActionListener{
       if("UP".equals(event.getActionCommand())){
          // we're moving the empty tile up meaning that 
          // we're moving the filled tile down
-         this.animate_move(Direction.dir.UP, 10);
+         if(this.animate_move(Direction.dir.UP, 10) == false) return;
       }
       else if("DOWN".equals(event.getActionCommand())){
-         this.animate_move(Direction.dir.DOWN, 10);
+         if(this.animate_move(Direction.dir.DOWN, 10) == false) return;
       }
       else if("RIGHT".equals(event.getActionCommand())){
-         this.animate_move(Direction.dir.RIGHT, 10);
+         if(this.animate_move(Direction.dir.RIGHT, 10) == false) return;
       }
       else if("LEFT".equals(event.getActionCommand())){
-         this.animate_move(Direction.dir.LEFT, 10);
+         if(this.animate_move(Direction.dir.LEFT, 10) == false) return;
+      }
+      else if("shuffle".equals(event.getActionCommand())){
+         this.game.user_shuffle();
       }
       else if("about".equals(event.getActionCommand())){
          JOptionPane.showMessageDialog(this, "Author: Kyle Dixler\nDate Written: 10/3/2017\nThe 2nd programming assignment for CS 342\n");
@@ -139,6 +142,8 @@ public class Gui extends JFrame implements ActionListener{
       this.add(this.button_undo);
       this.add(this.button_undo_all);
       this.add(this.button_solve);
+      this.add(this.button_shuffle);
+
       this.add(this.button_quit);
       this.add(this.button_about);
       this.add(this.button_help);
@@ -148,8 +153,8 @@ public class Gui extends JFrame implements ActionListener{
       this.repaint();
    }
    // serves to call the animation subroutine and 
-   private void animate_move(Direction.dir dir, int anim_time){
-         if(dir == null) return;
+   private boolean animate_move(Direction.dir dir, int anim_time){
+         if(dir == null || this.game.user_move(dir) == false) return false;
          long time = System.currentTimeMillis();
          for(int i = 0; i < this.size.getHeight()+this.buffer_size; i++){
             while( anim_time != 0 && System.currentTimeMillis() - time < anim_time/5);
@@ -158,11 +163,7 @@ public class Gui extends JFrame implements ActionListener{
             this.draw_frame();
          }
          // we now update the game state so the next move is up to date
-         this.game.user_move(dir);
-                                       // since the animation is relative to the 
-                                       // moving tile whereas the game engine
-                                       // moves relative to the empty space
-         return;
+         return true;
    }
    // Called by undo and solver to perform moves
    private void execute_move(Direction.dir dir, int anim_time){
@@ -251,8 +252,10 @@ public class Gui extends JFrame implements ActionListener{
       this.button_undo = this.create_menu_button("undo", 0, 5);
       this.button_undo_all = this.create_menu_button("undo all", 1, 5);
       this.button_solve = this.create_menu_button("solve", 2, 5);
-      this.button_quit = this.create_menu_button("quit", 3, 5);
+      this.button_shuffle = this.create_menu_button("shuffle", 3, 5);
+
       this.button_about = this.create_menu_button("about", 0, 6);
       this.button_help = this.create_menu_button("help", 1, 6);
+      this.button_quit = this.create_menu_button("quit", 2, 6);
    }
 }

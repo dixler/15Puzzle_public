@@ -1,5 +1,3 @@
-import java.util.Random;
-import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;

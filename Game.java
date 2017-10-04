@@ -41,6 +41,11 @@ public class Game{
       else return false;
    }
 
+   public void user_shuffle(){
+      this.board.shuffle();
+      this.undo_list.clear();
+   }
+
    // pop the last element of the undo list for the client to handle
    public Direction.dir user_undo(){
       // swap by the reverse of the undo list
