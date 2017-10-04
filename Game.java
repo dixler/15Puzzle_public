@@ -21,6 +21,7 @@ public class Game{
 
       // now shuffle the board
       this.board.shuffle();
+      System.out.printf("Complexity: %d\n", this.board.get_complexity());
    }
 
    // client function calls this to make a move
