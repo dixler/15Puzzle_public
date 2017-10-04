@@ -12,6 +12,7 @@ import java.awt.event.*;
 public class Gui extends JFrame implements ActionListener{
    private Renderer renderer;
    private Game game;
+   private boolean gave_up;
 
    private Gui_button   button_up, button_down, button_left, button_right; 
    private JButton   button_undo, button_undo_all, button_solve, button_shuffle,
@@ -52,6 +53,8 @@ public class Gui extends JFrame implements ActionListener{
       this.renderer = new Renderer(this.game, this.size, this.buffer_size);
       this.renderer.setDoubleBuffered(true);
 
+      this.gave_up = false;
+
       this.initialize_buttons();
       this.draw_frame();
    }
@@ -75,6 +78,7 @@ public class Gui extends JFrame implements ActionListener{
       }
       else if("shuffle".equals(event.getActionCommand())){
          this.game.user_shuffle();
+         this.gave_up = false;
       }
       else if("about".equals(event.getActionCommand())){
          JOptionPane.showMessageDialog(this, "Author: Kyle Dixler\nDate Written: 10/3/2017\nThe 2nd programming assignment for CS 342\n");
@@ -82,9 +86,6 @@ public class Gui extends JFrame implements ActionListener{
       }
       else if("help".equals(event.getActionCommand())){
          JOptionPane.showMessageDialog(this, " This is the 15 puzzle, you need to organize the pattern into \n an ascending order from 1-15.  To do this, you can only click \n the tiles next to the empty space to move them into the empty \n space. \n The top row should read [1] [2] [3] [4].\n The bottom row should read [13] [14] [15] [empty space]\n ");
-         /*
-This is the 15 puzzle, you need to organize the pattern into \n an ascending order from 1-15.  To do this, you can only click \n the tiles next to the empty space to move them into the empty \n space. \n The top row should read [1] [2] [3] [4].\n The bottom row should read [13] [14] [15] [empty space]\n
-*/
          return;
       }
       else if("quit".equals(event.getActionCommand())){
@@ -97,6 +98,8 @@ This is the 15 puzzle, you need to organize the pattern into \n an ascending ord
                                                          // and then calls execute_move()
          this.game.user_undo();                       // removes the last entry in the undo list 
                                                       // and does nothing
+         this.renderer.update_game_state(this.game);
+         this.draw_frame();
          return;
       }
       else if("undo all".equals(event.getActionCommand())){
@@ -108,6 +111,7 @@ This is the 15 puzzle, you need to organize the pattern into \n an ascending ord
          return;
       }
       else if("solve".equals(event.getActionCommand())){
+         this.gave_up = true;
          LinkedList<Direction.dir> solution = this.game.user_solve();
          System.out.printf("Solved\n");
          while(solution.size() > 0){
@@ -116,8 +120,9 @@ This is the 15 puzzle, you need to organize the pattern into \n an ascending ord
          return;
       }
       // handle popups
-      if(this.game.is_solved()){
-         JOptionPane.showMessageDialog(this, "Congratulations! You solved the puzzle!");
+      if(!this.gave_up && this.game.is_solved()){
+         String message = "Congratulations! You solved the puzzle! in " + this.game.get_num_moves() + "moves!";
+         JOptionPane.showMessageDialog(this, message);
       }
       this.renderer.update_game_state(this.game);
       this.draw_frame();
@@ -142,6 +147,8 @@ This is the 15 puzzle, you need to organize the pattern into \n an ascending ord
 
       this.add(this.button_right);
          this.button_right.setLocation(this.button_dir_pos(Direction.dir.LEFT, 1));
+
+      // handle menu buttons
       this.add(this.button_undo);
       this.add(this.button_undo_all);
       this.add(this.button_solve);

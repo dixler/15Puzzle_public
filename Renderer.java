@@ -24,6 +24,8 @@ public class Renderer extends JPanel {
    private int width;
    private int height;
    private int buffer_size;
+   private int complexity;
+   private int num_moves;
 	
    /*           _     _ _      
     _ __  _   _| |__ | (_) ___ 
@@ -46,6 +48,8 @@ public class Renderer extends JPanel {
             this.empty_index = i;
          }
       }
+      this.complexity = game.get_complexity();
+      this.num_moves = game.get_num_moves();
 	}
    public void update_game_state(Game game){
       this.tile_arr = new Gui_tile[game.get_board().num_tiles()];
@@ -57,6 +61,8 @@ public class Renderer extends JPanel {
             this.empty_index = i;
          }
       }
+      this.complexity = game.get_complexity();
+      this.num_moves = game.get_num_moves();
    }
    public void move_tile(Direction.dir dir){
       Gui_tile tile = this.get_adjacent_tile(Direction.invert(dir));
@@ -90,6 +96,14 @@ public class Renderer extends JPanel {
                                        this.tile_arr[i].get_y());
          }
       }
+      drawing_context.setColor(new Color(0,0,0));
+      drawing_context.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+      drawing_context.drawString("Move Count: " + this.num_moves,
+                                 this.tile_arr[0].get_width()/2, 
+                                 (this.tile_arr[0].get_height()+this.buffer_size)*(1+this.height));
+      drawing_context.drawString("Complexity: " + this.complexity,
+                                 this.tile_arr[0].get_width()/2, 
+                                 (this.tile_arr[0].get_height()+this.buffer_size)*(1+this.height)-24);
       return;
    }
 

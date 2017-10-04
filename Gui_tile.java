@@ -69,4 +69,10 @@ public class Gui_tile{
    public int get_y(){
       return position.y+size.height/2;
    }
+   public int get_width(){
+      return (int)this.size.getWidth();
+   }
+   public int get_height(){
+      return (int)this.size.getHeight();
+   }
 }

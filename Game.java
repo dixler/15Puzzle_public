@@ -68,6 +68,12 @@ public class Game{
    /*
     * various board state/status functions
     */
+   public int get_complexity(){
+      return this.board.get_complexity();
+   }
+   public int get_num_moves(){
+      return this.undo_list.size();
+   }
    public boolean is_original_puzzle(){
       return this.undo_list.isEmpty();
    }
