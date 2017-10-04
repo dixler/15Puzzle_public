@@ -63,11 +63,20 @@ public class Gui_tile{
       }
    }
    // get the position data of the middle of the board
-   public int get_x(){
+   public int get_x_center(){
       return position.x+size.width/2;
    }
-   public int get_y(){
+   public int get_y_center(){
       return position.y+size.height/2;
+   }
+   public int get_x(){
+      return position.x;
+   }
+   public int get_index(){
+      return this.tile.index();
+   }
+   public int get_y(){
+      return position.y;
    }
    public int get_width(){
       return (int)this.size.getWidth();

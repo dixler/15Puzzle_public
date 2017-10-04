@@ -1,9 +1,15 @@
 import java.awt.Color;
+
+import java.awt.Font;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.Dimension;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.awt.*;
+
 import javax.swing.JPanel;
 
 /*
@@ -26,6 +32,12 @@ public class Renderer extends JPanel {
    private int buffer_size;
    private int complexity;
    private int num_moves;
+
+   private boolean using_image;
+   private BufferedImage[] img_arr;
+
+
+   //Images
 	
    /*           _     _ _      
     _ __  _   _| |__ | (_) ___ 
@@ -35,6 +47,25 @@ public class Renderer extends JPanel {
    |_|                         */
 
 	public Renderer(Game game, Dimension size, int buffer_size){
+      if(game.get_width() == 4 && game.get_height() == 4){
+         // we're using an image
+         using_image = true;
+         this.img_arr = new BufferedImage[16];
+         // load the buffered images into the arr
+         for(int i = 0; i < 16; i++){
+                 try{
+                    this.img_arr[i] = ImageIO.read(new FileInputStream(new File("assets/img" + i + ".jpg")));
+                 }catch(IOException e){
+                    System.out.printf("failed\n");
+
+                 }
+
+         }
+      }
+      else{
+         using_image = false;
+      }
+
       this.size = size;
       this.buffer_size = buffer_size;
       this.tile_arr = new Gui_tile[game.get_board().num_tiles()];
@@ -89,11 +120,12 @@ public class Renderer extends JPanel {
          }
          else{
             drawing_context.setColor(new Color(0,155,0));
+            if(using_image) drawing_context.setPaint(new TexturePaint(this.img_arr[this.tile_arr[i].get_index()], this.tile_arr[i].get_icon()));
             drawing_context.fill(this.tile_arr[i].get_icon());
             drawing_context.setColor(new Color(255,255,255));
             drawing_context.drawString(this.tile_arr[i].get_label(), 
-                                       this.tile_arr[i].get_x(), 
-                                       this.tile_arr[i].get_y());
+                                       this.tile_arr[i].get_x_center(), 
+                                       this.tile_arr[i].get_y_center());
          }
       }
       drawing_context.setColor(new Color(0,0,0));
