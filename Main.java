@@ -6,13 +6,8 @@ import java.io.*;
 
 public class Main{
    public static void main(String[] args){
-      // TODO
-      //File image = new File("custom.jpg");
-      //test
-      Game game = new Game(4);
-      //game.play();
-      Window window = new Window(game);
-      window.play();
+      // create a new window and play it
+      Window window = new Window(new Game(4));
       return;
    }
 }

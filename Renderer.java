@@ -30,7 +30,7 @@ public class Renderer extends JPanel {
       Tile[] tiles = game.get_tiles();
       for(int i = 0; i < tiles.length; i++){
          this.tile_arr[i] = new Gui_tile(tiles[i], this.size, this.buffer_size);
-         if(tiles[i].index() == 15){
+         if(tiles[i].index() == (this.width*this.height-1)){
             // empty tile
             this.empty_index = i;
          }
@@ -41,22 +41,42 @@ public class Renderer extends JPanel {
       Tile[] tiles = game.get_tiles();
       for(int i = 0; i < tiles.length; i++){
          this.tile_arr[i] = new Gui_tile(tiles[i], this.size, this.buffer_size);
-         if(tiles[i].index() == 15){
+         if(tiles[i].index() == (this.width*this.height-1)){
             // track empty tile
             this.empty_index = i;
          }
       }
-   }
-
-   public int get_empty_index(){
-      // the swapped will be somewhere relative to the empty
-      return this.empty_index;
    }
    public void move_tile(Direction.dir dir){
       Gui_tile tile = this.get_adjacent_tile(Direction.invert(dir));
       if(tile == null) return;
       tile.move(dir);
       return;
+   }
+	@Override
+   public void paintComponent(Graphics g) {  
+      Graphics2D drawing_context = (Graphics2D) g;
+      drawing_context.setFont(new Font("TimesRoman", Font.PLAIN, 36)); 
+      // handle all tiles
+      for(int i = 0; i < this.tile_arr.length; i++){
+         if(i == this.empty_index){
+            drawing_context.setColor(new Color(0,0,0));
+         }
+         else{
+            drawing_context.setColor(new Color(0,155,0));
+            drawing_context.fill(this.tile_arr[i].get_icon());
+            drawing_context.setColor(new Color(255,255,255));
+            drawing_context.drawString(this.tile_arr[i].get_label(), 
+                                       this.tile_arr[i].get_x(), 
+                                       this.tile_arr[i].get_y());
+         }
+      }
+      return;
+   }
+
+   private int get_empty_index(){
+      // the swapped will be somewhere relative to the empty
+      return this.empty_index;
    }
    private Gui_tile get_adjacent_tile(Direction.dir dir){
       // the swapped will be somewhere relative to the empty
@@ -82,27 +102,6 @@ public class Renderer extends JPanel {
       // bottom edge
       if(index >= this.tile_arr.length) return null;
       return this.tile_arr[index];
-   }
-
-	@Override
-   public void paintComponent(Graphics g) {  
-      Graphics2D drawing_context = (Graphics2D) g;
-      drawing_context.setFont(new Font("TimesRoman", Font.PLAIN, 36)); 
-      // handle all tiles
-      for(int i = 0; i < this.tile_arr.length; i++){
-         if(i == this.empty_index){
-            drawing_context.setColor(new Color(0,0,0));
-         }
-         else{
-            drawing_context.setColor(new Color(0,155,0));
-            drawing_context.fill(this.tile_arr[i].get_icon());
-            drawing_context.setColor(new Color(255,255,255));
-            drawing_context.drawString(this.tile_arr[i].get_label(), 
-                                       this.tile_arr[i].get_x(), 
-                                       this.tile_arr[i].get_y());
-         }
-      }
-      return;
    }
 }
 

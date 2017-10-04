@@ -1,7 +1,10 @@
+/*
+ * this class contains the raw data of the tile
+ * it's primarily used in the Game class
+ */
 public class Tile{
    private int index; // value held in the tile
    private int x, y;
-   //private Object data; // PLACEHOLDER
 
    public Tile(int index, int x, int y){
       this.index = index;
@@ -38,10 +41,4 @@ public class Tile{
             break;
       }
    }
-   /*
-   public void set_pos(int x, int y){
-      this.x = x;
-      this.y = y;
-   }
-   */
 }

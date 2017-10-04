@@ -5,18 +5,25 @@ public class Game{
    private Solver my_solver;
    private LinkedList<Direction.dir> undo_list;
 
+   /*           _     _ _      
+    _ __  _   _| |__ | (_) ___ 
+   | '_ \| | | | '_ \| | |/ __|
+   | |_) | |_| | |_) | | | (__ 
+   | .__/ \__,_|_.__/|_|_|\___|
+   |_|                         */
    public Game(int board_size){
       this.board = new Board((char)board_size, (char)board_size);
       this.undo_list = new LinkedList<Direction.dir>();
 
-      // feed the solver the original board state
+      // give the solver the original board state
+      // to keep track of
       this.my_solver = new Solver(this.board);
 
       // now shuffle the board
-      //this.board.shuffle();
-      this.board.print_board();
+      this.board.shuffle();
    }
 
+   // client function calls this to make a move
    public boolean user_move(Direction.dir dir){
       if(this.board.swap(dir)){
          this.undo_list.addFirst(dir);
@@ -26,7 +33,7 @@ public class Game{
       else return false;
    }
 
-   // pop the last element of the undo list for the gui to handle
+   // pop the last element of the undo list for the client to handle
    public Direction.dir user_undo(){
       // swap by the reverse of the undo list
       if(!undo_list.isEmpty()){
@@ -36,7 +43,7 @@ public class Game{
    }
 
    // returns a solution to the current board
-   // the caller can decide what to do with the solution
+   // the client can decide what to do with the solution
    public LinkedList<Direction.dir> user_solve(){
       return this.my_solver.find_solution(this.board).move_list;
    }
@@ -44,11 +51,9 @@ public class Game{
    public boolean is_original_puzzle(){
       return this.undo_list.isEmpty();
    }
-
    public boolean is_solved(){
       return this.my_solver.is_solved(this.board);
    }
-
    public int get_width(){
       return this.board.get_width();
    }

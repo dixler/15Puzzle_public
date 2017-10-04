@@ -28,7 +28,8 @@ public class Window extends JFrame implements ActionListener{
 
       // frame configuration
       this.setTitle("15 puzzle");
-      this.setSize(1000, 1000);
+      this.setSize(  this.game.get_height()*((int)this.size.getHeight()+this.buffer_size+2), // there are 2 extra slots for buttons
+                     this.game.get_width()*((int)this.size.getWidth()+this.buffer_size));
       this.setForeground(new Color(238,238,238));
       this.setBackground(new Color(238,238,238));
       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,10 +40,9 @@ public class Window extends JFrame implements ActionListener{
       this.renderer.setDoubleBuffered(true);
 
       this.initialize_buttons();
-   }
-   public void play(){
       this.draw_frame();
    }
+   // handle all of the rendering
    private void draw_frame(){
 
       this.add(this.button_up);
@@ -88,9 +88,11 @@ public class Window extends JFrame implements ActionListener{
       }
       else if("about".equals(event.getActionCommand())){
          JOptionPane.showMessageDialog(this, "Author: Kyle Dixler\nDate Written: 10/3/2017\nThe 2nd programming assignment for CS 342\n");
+         return;
       }
       else if("help".equals(event.getActionCommand())){
          JOptionPane.showMessageDialog(this, "This is the 15 puzzle, you need to organize the pattern into an ascending order from 1-15");
+         return;
       }
       else if("quit".equals(event.getActionCommand())){
          this.setVisible(false);
@@ -100,7 +102,7 @@ public class Window extends JFrame implements ActionListener{
       else if("undo".equals(event.getActionCommand())){
          this.execute_move(this.game.user_undo(), 10);   // removes the last entry in the undo list
                                                          // and then calls execute_move()
-      this.game.user_undo();                          // removes the last entry in the undo list 
+         this.game.user_undo();                       // removes the last entry in the undo list 
                                                       // and does nothing
          return;
       }
@@ -133,7 +135,7 @@ public class Window extends JFrame implements ActionListener{
          if(dir == null) return;
          long time = System.currentTimeMillis();
          for(int i = 0; i < this.size.getHeight()+this.buffer_size; i++){
-            while( anim_time != 0 && System.currentTimeMillis() - time < anim_time/2);
+            while( anim_time != 0 && System.currentTimeMillis() - time < anim_time/5);
             time = System.currentTimeMillis();
             this.renderer.move_tile(dir);
             this.draw_frame();
@@ -165,27 +167,29 @@ public class Window extends JFrame implements ActionListener{
          }
          return;
    }
+   // determines the position of the move issuing buttons
    private Point button_dir_pos(Direction.dir dir, int offset){
-      Point origin = new Point(  this.game.get_empty_pos()[0]*(this.size.width+10), 
-                                 this.game.get_empty_pos()[1]*(this.size.height+10));
+      Point origin = new Point(  this.game.get_empty_pos()[0]*(this.size.width+this.buffer_size), 
+                                 this.game.get_empty_pos()[1]*(this.size.height+this.buffer_size));
       switch(dir){
          case UP:
             return new Point( origin.x, 
-                              origin.y - offset*(this.size.height+10));
+                              origin.y - offset*(this.size.height+this.buffer_size));
          case DOWN:
             return new Point( origin.x, 
-                              origin.y + offset*(this.size.height+10));
+                              origin.y + offset*(this.size.height+this.buffer_size));
          case LEFT:
-            return new Point( origin.x - offset*(this.size.width+10), 
+            return new Point( origin.x - offset*(this.size.width+this.buffer_size), 
                               origin.y);
          case RIGHT:
-            return new Point( origin.x + offset*(this.size.width+10), 
+            return new Point( origin.x + offset*(this.size.width+this.buffer_size), 
                               origin.y);
       }
       return null;
    }
+   // determine the position of a button in a makeshift grid
    private Point button_pos(int offset_x, int offset_y){
-      return new Point(offset_x*(this.size.width+10), offset_y*(this.size.height+10));
+      return new Point(offset_x*(this.size.width+this.buffer_size), offset_y*(this.size.height+this.buffer_size));
    }
    // makes creating buttons less hectic
    private JButton create_menu_button(String label, int x_pos, int y_pos){

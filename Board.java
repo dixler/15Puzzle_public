@@ -47,7 +47,8 @@ public class Board{
    public int num_tiles(){
       return this.num_tiles;
    }
-   // we stuff the tiles into an array in order
+   // we stuff the tiles into an array in linear order
+   // by position
    public Tile[] get_tiles(){
       Tile[] tile_arr = new Tile[this.num_tiles];
       for(int cur_y = 0; cur_y < this.width; cur_y++){
@@ -160,6 +161,7 @@ public class Board{
       this.empty_coord = adj_indx;
       // mark adj_indx to null for garbage collection
       adj_indx = null;
+      empty_tile = null;
       return true;
    }
 
@@ -241,9 +243,9 @@ public class Board{
       return null;
    }
 
-   private char[] get_adj_tile_index(Direction.dir direction){
+   private char[] get_adj_tile_index(Direction.dir dir){
       char[] adj_indx = new char[2];
-      switch(direction){
+      switch(dir){
          case UP:
             adj_indx[0] = this.empty_coord[0];           // x index
             adj_indx[1] = (char)(this.empty_coord[1]-1); // y index
