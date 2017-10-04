@@ -62,16 +62,16 @@ public class Gui extends JFrame implements ActionListener{
       if("UP".equals(event.getActionCommand())){
          // we're moving the empty tile up meaning that 
          // we're moving the filled tile down
-         this.animate_move(Direction.dir.DOWN, 10);
-      }
-      else if("DOWN".equals(event.getActionCommand())){
          this.animate_move(Direction.dir.UP, 10);
       }
+      else if("DOWN".equals(event.getActionCommand())){
+         this.animate_move(Direction.dir.DOWN, 10);
+      }
       else if("RIGHT".equals(event.getActionCommand())){
-         this.animate_move(Direction.dir.LEFT, 10);
+         this.animate_move(Direction.dir.RIGHT, 10);
       }
       else if("LEFT".equals(event.getActionCommand())){
-         this.animate_move(Direction.dir.RIGHT, 10);
+         this.animate_move(Direction.dir.LEFT, 10);
       }
       else if("about".equals(event.getActionCommand())){
          JOptionPane.showMessageDialog(this, "Author: Kyle Dixler\nDate Written: 10/3/2017\nThe 2nd programming assignment for CS 342\n");
@@ -126,16 +126,16 @@ public class Gui extends JFrame implements ActionListener{
    // handle all of the rendering
    private void draw_frame(){
       this.add(this.button_up);
-         this.button_up.setLocation(this.button_dir_pos(Direction.dir.UP, 1));
+         this.button_up.setLocation(this.button_dir_pos(Direction.dir.DOWN, 1));
 
       this.add(this.button_down);
-         this.button_down.setLocation(this.button_dir_pos(Direction.dir.DOWN, 1));
+         this.button_down.setLocation(this.button_dir_pos(Direction.dir.UP, 1));
 
       this.add(this.button_left);
-         this.button_left.setLocation(this.button_dir_pos(Direction.dir.LEFT, 1));
+         this.button_left.setLocation(this.button_dir_pos(Direction.dir.RIGHT, 1));
 
       this.add(this.button_right);
-         this.button_right.setLocation(this.button_dir_pos(Direction.dir.RIGHT, 1));
+         this.button_right.setLocation(this.button_dir_pos(Direction.dir.LEFT, 1));
       this.add(this.button_undo);
       this.add(this.button_undo_all);
       this.add(this.button_solve);
@@ -158,10 +158,10 @@ public class Gui extends JFrame implements ActionListener{
             this.draw_frame();
          }
          // we now update the game state so the next move is up to date
-         this.game.user_move(Direction.invert(dir));  // the reason that the move is inverted is 
-                                                      // since the animation is relative to the 
-                                                      // moving tile whereas the game engine
-                                                      // moves relative to the empty space
+         this.game.user_move(dir);
+                                       // since the animation is relative to the 
+                                       // moving tile whereas the game engine
+                                       // moves relative to the empty space
          return;
    }
    // Called by undo and solver to perform moves
@@ -223,29 +223,29 @@ public class Gui extends JFrame implements ActionListener{
    // configures the buttons
    private void initialize_buttons(){
       // button handling buttons are all relative to the empty space
-      this.button_up = new Gui_button(size);
-         this.button_up.setActionCommand("UP");
-         this.button_up.addActionListener(this);
-         this.button_up.setLocation(this.button_dir_pos(Direction.dir.UP, 1));
-         this.button_up.setDoubleBuffered(true);
-
       this.button_down = new Gui_button(size);
          this.button_down.setActionCommand("DOWN");
          this.button_down.addActionListener(this);
-         this.button_down.setLocation(this.button_dir_pos(Direction.dir.DOWN, 1));
+         this.button_down.setLocation(this.button_dir_pos(Direction.dir.UP, 1));
          this.button_down.setDoubleBuffered(true);
 
-      this.button_left = new Gui_button(size);
-         this.button_left.setActionCommand("LEFT");
-         this.button_left.addActionListener(this);
-         this.button_left.setLocation(this.button_dir_pos(Direction.dir.LEFT, 1));
-         this.button_left.setDoubleBuffered(true);
+      this.button_up = new Gui_button(size);
+         this.button_up.setActionCommand("UP");
+         this.button_up.addActionListener(this);
+         this.button_up.setLocation(this.button_dir_pos(Direction.dir.DOWN, 1));
+         this.button_up.setDoubleBuffered(true);
 
       this.button_right = new Gui_button(size);
          this.button_right.setActionCommand("RIGHT");
          this.button_right.addActionListener(this);
-         this.button_right.setLocation(this.button_dir_pos(Direction.dir.RIGHT, 1));
+         this.button_right.setLocation(this.button_dir_pos(Direction.dir.LEFT, 1));
          this.button_right.setDoubleBuffered(true);
+
+      this.button_left = new Gui_button(size);
+         this.button_left.setActionCommand("LEFT");
+         this.button_left.addActionListener(this);
+         this.button_left.setLocation(this.button_dir_pos(Direction.dir.RIGHT, 1));
+         this.button_left.setDoubleBuffered(true);
 
       // handle menu buttons
       this.button_undo = this.create_menu_button("undo", 0, 5);

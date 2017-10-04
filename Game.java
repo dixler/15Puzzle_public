@@ -31,9 +31,10 @@ public class Game{
    }
 
    // client function calls this to make a move
+   // moves relative to the tile being moved
    public boolean user_move(Direction.dir dir){
-      if(this.board.swap(dir)){
-         this.undo_list.addFirst(dir);
+      if(this.board.swap(Direction.invert(dir))){
+         this.undo_list.addFirst(Direction.invert(dir));
          return true;
       }
       // handle invalid move
@@ -44,7 +45,7 @@ public class Game{
    public Direction.dir user_undo(){
       // swap by the reverse of the undo list
       if(!undo_list.isEmpty()){
-         return Direction.invert(undo_list.remove(0));
+         return undo_list.remove(0);
       }
       return null;
    }
@@ -52,7 +53,11 @@ public class Game{
    // returns a solution to the current board
    // the client can decide what to do with the solution
    public LinkedList<Direction.dir> user_solve(){
-      return this.my_solver.find_solution(this.board).get_move_list();
+      LinkedList<Direction.dir> solution_set = this.my_solver.find_solution(this.board).get_move_list();
+      for(int i = 0; i < solution_set.size(); i++){
+         solution_set.add(Direction.invert(solution_set.pop()));
+      }
+      return solution_set;
    }
 
    /*
