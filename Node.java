@@ -1,17 +1,17 @@
 import java.util.*;
 public class Node{
-   public LinkedList<Direction> move_list;
+   public LinkedList<Direction.dir> move_list;
    protected Board board;
    Node_pool pool;
 
    public Node(Node_pool pool){
       this.pool = pool;
-      move_list = new LinkedList<Direction>();
+      move_list = new LinkedList<Direction.dir>();
    }
    // allows anonymous inner class to create a base state for bfs
    public void set_board(Board board){}
 
-   public Direction pop(){
+   public Direction.dir pop(){
       return move_list.pop();
    }
 
@@ -20,13 +20,13 @@ public class Node{
    }
 
    // adds a move to the move_list
-   public boolean add_move(Direction dir){
+   public boolean add_move(Direction.dir dir){
       // TRUE on success FALSE on failure
-      Direction cur_move = dir;
+      Direction.dir cur_move = dir;
       this.move_list.add(cur_move);
       return this.board.swap(cur_move);
    }
-   public Node make_move(Direction dir){
+   public Node make_move(Direction.dir dir){
       // copy this branch
       Node new_branch = this.duplicate();
       // add the desired move
@@ -44,7 +44,7 @@ public class Node{
    public Node duplicate(){
       Node clone = pool.request_node();
       clone.board = this.board.clone();
-      for(Direction move : this.move_list){
+      for(Direction.dir move : this.move_list){
          clone.move_list.add(move);
       }
       return clone;

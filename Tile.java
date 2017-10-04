@@ -22,7 +22,7 @@ public class Tile{
    public int index(){
       return this.index;
    }
-   public void move(Direction dir){
+   public void move(Direction.dir dir){
       switch(dir){
          case UP:
             this.y--;

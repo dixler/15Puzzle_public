@@ -39,7 +39,7 @@ public class Gui_tile{
    }
    // NOTE the number of tiles isn't known by the tile
    // so we need to provide it
-   public int get_index_adjacent(Direction dir, int board_width){
+   public int get_index_adjacent(Direction.dir dir, int board_width){
       int index = 0;
       switch(dir){
          case UP:
@@ -57,7 +57,7 @@ public class Gui_tile{
       }
       return index;
    }
-   public void move(Direction dir){
+   public void move(Direction.dir dir){
       switch(dir){
          case UP:
             this.position.setLocation(this.position.x, this.position.y-1);

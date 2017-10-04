@@ -1,3 +1,4 @@
+import java.util.*;
 /*
  * This seemed to improve runtime by reducing the number of newly allocated nodes
  * when we're done with a node, we place it in this object. When we want a new node
@@ -22,7 +23,7 @@ public class Node_pool{
       else{
          // recycle old node
          Node popped = pool.remove(0);
-         popped.move_list = new LinkedList<Direction>();
+         popped.move_list = new LinkedList<Direction.dir>();
          return popped;
       }
    }
@@ -32,4 +33,3 @@ public class Node_pool{
       return;
    }
 }
-

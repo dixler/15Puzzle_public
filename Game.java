@@ -3,12 +3,12 @@ import java.util.Random;
 public class Game{
    private Board board;
    private Solver my_solver;
-   private LinkedList<Direction> undo_list;
+   private LinkedList<Direction.dir> undo_list;
 
    @SuppressWarnings("fallthrough")
    public Game(int board_size){
       this.board = new Board((char)board_size, (char)board_size);
-      this.undo_list = new LinkedList<Direction>();
+      this.undo_list = new LinkedList<Direction.dir>();
 
       // feed the solver the original board state
       this.my_solver = new Solver(this.board);
@@ -19,7 +19,7 @@ public class Game{
       this.board.print_board();
    }
 
-   public boolean user_move(Direction dir){
+   public boolean user_move(Direction.dir dir){
       if(this.board.swap(dir)){
          this.undo_list.addFirst(dir);
          this.board.print_board();
@@ -43,18 +43,18 @@ public class Game{
    }
 
    // pop the last element of the undo list for the gui to handle
-   public Direction user_undo(){
+   public Direction.dir user_undo(){
       // swap by the reverse of the undo list
       if(!undo_list.isEmpty()){
          switch(undo_list.remove(0)){
             case UP:
-               return Direction.DOWN;
+               return Direction.dir.DOWN;
             case LEFT:
-               return Direction.RIGHT;
+               return Direction.dir.RIGHT;
             case DOWN:
-               return Direction.UP;
+               return Direction.dir.UP;
             case RIGHT:
-               return Direction.LEFT;
+               return Direction.dir.LEFT;
          }
       }
       return null;
@@ -62,7 +62,7 @@ public class Game{
 
    // returns a solution to the current board
    // the caller can decide what to do with the solution
-   public LinkedList<Direction> user_solve(){
+   public LinkedList<Direction.dir> user_solve(){
       return this.my_solver.find_solution(this.board).move_list;
    }
 
@@ -73,7 +73,7 @@ public class Game{
       //this.board.DEBUG_TILE_print_board();
       System.out.printf("Complexity: %d\n", this.board.get_complexity());
       System.out.printf("begin solve\n");
-      LinkedList<Direction> solution = this.my_solver.find_solution(this.board).move_list;
+      LinkedList<Direction.dir> solution = this.my_solver.find_solution(this.board).move_list;
       System.out.printf("Moves: %d\n", solution.size());
          this.board.print_board();
          System.out.printf("\n");

@@ -1,6 +1,6 @@
 all: Main.class
 
-Main.class: Main.java Board.java Direction.java Game.java Gui_tile.java Node.java Node_pool.java Solver.java Tile.java Renderer.java Window.java
+Main.class: Main.java Board.java Direction.java Game.java Gui_tile.java Node_pool.java Solver.java Tile.java Renderer.java Window.java
 	javac Main.java
 
 test: Main.class

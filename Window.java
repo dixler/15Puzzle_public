@@ -27,23 +27,23 @@ public class Window extends JFrame implements ActionListener{
       this.button_up = new Gui_button(size);
          this.button_up.setActionCommand("UP");
          this.button_up.addActionListener(this);
-         this.button_up.setLocation(this.button_dir_pos(Direction.UP, 1));
+         this.button_up.setLocation(this.button_dir_pos(Direction.dir.UP, 1));
 
 
       this.button_down = new Gui_button(size);
          this.button_down.setActionCommand("DOWN");
          this.button_down.addActionListener(this);
-         this.button_down.setLocation(this.button_dir_pos(Direction.DOWN, 1));
+         this.button_down.setLocation(this.button_dir_pos(Direction.dir.DOWN, 1));
 
       this.button_left = new Gui_button(size);
          this.button_left.setActionCommand("LEFT");
          this.button_left.addActionListener(this);
-         this.button_left.setLocation(this.button_dir_pos(Direction.LEFT, 1));
+         this.button_left.setLocation(this.button_dir_pos(Direction.dir.LEFT, 1));
 
       this.button_right = new Gui_button(size);
          this.button_right.setActionCommand("RIGHT");
          this.button_right.addActionListener(this);
-         this.button_right.setLocation(this.button_dir_pos(Direction.RIGHT, 1));
+         this.button_right.setLocation(this.button_dir_pos(Direction.dir.RIGHT, 1));
 
       // handle menu buttons
       this.button_undo = new JButton();
@@ -94,16 +94,16 @@ public class Window extends JFrame implements ActionListener{
       // when we start drawing
 
       this.app_frame.add(this.button_up);
-         this.button_up.setLocation(this.button_dir_pos(Direction.UP, 1));
+         this.button_up.setLocation(this.button_dir_pos(Direction.dir.UP, 1));
 
       this.app_frame.add(this.button_down);
-         this.button_down.setLocation(this.button_dir_pos(Direction.DOWN, 1));
+         this.button_down.setLocation(this.button_dir_pos(Direction.dir.DOWN, 1));
 
       this.app_frame.add(this.button_left);
-         this.button_left.setLocation(this.button_dir_pos(Direction.LEFT, 1));
+         this.button_left.setLocation(this.button_dir_pos(Direction.dir.LEFT, 1));
 
       this.app_frame.add(this.button_right);
-         this.button_right.setLocation(this.button_dir_pos(Direction.RIGHT, 1));
+         this.button_right.setLocation(this.button_dir_pos(Direction.dir.RIGHT, 1));
 
 
       this.app_frame.add(this.button_undo);
@@ -146,35 +146,35 @@ public class Window extends JFrame implements ActionListener{
    public void actionPerformed(ActionEvent event) {
       int button_offset = this.size.width; // height and width are the same
       boolean valid = false;
-      Direction dir = null;
+      Direction.dir dir = null;
       System.out.printf("actionPerformed %s\n", event.getSource());
       if("UP".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
-         dir = Direction.DOWN;   // the tile we're moving is going 
+         dir = Direction.dir.DOWN;   // the tile we're moving is going 
                                  // in the opposite direction
-         this.game.user_move(Direction.UP);
+         this.game.user_move(Direction.dir.UP);
          this.animate_move(dir, 100);
          valid = true;
       }
       else if("DOWN".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
-         dir = Direction.UP;
-         this.game.user_move(Direction.DOWN);
+         dir = Direction.dir.UP;
+         this.game.user_move(Direction.dir.DOWN);
          this.animate_move(dir, 100);
          valid = true;
       }
       else if("RIGHT".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
-         dir = Direction.LEFT;
-         this.game.user_move(Direction.RIGHT);
+         dir = Direction.dir.LEFT;
+         this.game.user_move(Direction.dir.RIGHT);
          this.animate_move(dir, 100);
          valid = true;
       }
       else if("LEFT".equals(event.getActionCommand())){
          // animate moves the tile in the opposite direction
-         dir = Direction.RIGHT;
+         dir = Direction.dir.RIGHT;
          this.animate_move(dir, 100);
-         this.game.user_move(Direction.LEFT);
+         this.game.user_move(Direction.dir.LEFT);
          valid = true;
       }
       else if("about".equals(event.getActionCommand())){
@@ -202,7 +202,7 @@ public class Window extends JFrame implements ActionListener{
          return;
       }
       else if("solve".equals(event.getActionCommand())){
-         LinkedList<Direction> solution = this.game.user_solve();
+         LinkedList<Direction.dir> solution = this.game.user_solve();
          System.out.printf("Solved\n");
          while(solution.size() > 0){
             this.renderer.print_board();
@@ -219,7 +219,7 @@ public class Window extends JFrame implements ActionListener{
       this.draw_frame();
       return;
    }
-   private void animate_move(Direction dir, int anim_time){
+   private void animate_move(Direction.dir dir, int anim_time){
          if(dir == null){
             return;
          }
@@ -233,7 +233,7 @@ public class Window extends JFrame implements ActionListener{
          }
          return;
    }
-   private void execute_move(Direction dir, int anim_time){
+   private void execute_move(Direction.dir dir, int anim_time){
          if(dir == null){
             return;
          }
@@ -254,7 +254,7 @@ public class Window extends JFrame implements ActionListener{
          }
          return;
    }
-   private Point button_dir_pos(Direction dir, int offset){
+   private Point button_dir_pos(Direction.dir dir, int offset){
       Point origin = new Point(  this.game.get_empty_pos()[0]*(this.size.width+10), 
                                  this.game.get_empty_pos()[1]*(this.size.height+10));
       switch(dir){

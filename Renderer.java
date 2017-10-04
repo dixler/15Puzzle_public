@@ -57,27 +57,27 @@ public class Renderer extends JPanel {
       coord[1] = get_empty_index()/this.height;
       return coord;
    }
-   public void move_tile(Direction dir){
-      Direction inv_dir = null;
+   public void move_tile(Direction.dir dir){
+      Direction.dir inv_dir = null;
       switch(dir){
          case UP:
-            inv_dir = Direction.DOWN;
+            inv_dir = Direction.dir.DOWN;
             break;
          case DOWN:
-            inv_dir = Direction.UP;
+            inv_dir = Direction.dir.UP;
             break;
          case LEFT:
-            inv_dir = Direction.RIGHT;
+            inv_dir = Direction.dir.RIGHT;
             break;
          case RIGHT:
-            inv_dir = Direction.LEFT;
+            inv_dir = Direction.dir.LEFT;
             break;
       }
 
       this.get_adjacent_tile(inv_dir).move(dir);
       return;
    }
-   public Gui_tile get_adjacent_tile(Direction dir){
+   public Gui_tile get_adjacent_tile(Direction.dir dir){
       // the swapped will be somewhere relative to the empty
       System.out.printf("adjacent %d", this.tile_arr[this.get_empty_index()].get_index_adjacent(dir, 4));
       // get the linear tile index of the tile to move

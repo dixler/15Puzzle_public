@@ -149,36 +149,25 @@ System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y()
    }
 
    //swap the empty space with the slot to the [UP/DOWN/LEFT/RIGHT] returns TRUE if successful
-   public boolean swap(Direction move){
-      Direction inverse = null;
+   public boolean swap(Direction.dir move){
+      Direction.dir inverse = Direction.invert(move);
+      // check if move is out of bounds
       switch(move){
          case UP:
-            if(empty_coord[1] == 0){
-               //System.out.prcharf("UP failed\n");
+            if(empty_coord[1] == 0)
                return false;
-            }
-            inverse = Direction.DOWN;
             break;
          case DOWN:
-            if(empty_coord[1] == (height-1)){
-               //System.out.prcharf("DOWN failed\n");
+            if(empty_coord[1] == (height-1))
                return false;
-            }
-            inverse = Direction.UP;
             break;
          case LEFT:
-            if(empty_coord[0] == 0){
-               //System.out.prcharf("LEFT failed\n");
+            if(empty_coord[0] == 0)
                return false;
-            }
-            inverse = Direction.RIGHT;
             break;
          case RIGHT:
-            if(empty_coord[0] == (width-1)){
-               //System.out.prcharf("RIGHT failed\n");
+            if(empty_coord[0] == (width-1))
                return false;
-            }
-            inverse = Direction.LEFT;
             break;
       }
       char[] adj_indx = this.get_adj_tile_index(move);
@@ -265,7 +254,7 @@ System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y()
       |_|                              
    */
    
-   private Tile get_adj_tile(Direction direction){
+   private Tile get_adj_tile(Direction.dir direction){
       switch(direction){
          case UP:
             return this.board[this.empty_coord[0]][this.empty_coord[1]-1];
@@ -279,7 +268,7 @@ System.out.printf("[%d][%d]\t", board[cur_x][cur_y].x(), board[cur_x][cur_y].y()
       return null;
    }
 
-   private char[] get_adj_tile_index(Direction direction){
+   private char[] get_adj_tile_index(Direction.dir direction){
       char[] adj_indx = new char[2];
       switch(direction){
          case UP:

@@ -50,7 +50,7 @@ cur_node.get_board().print_board();
          if(this.target.equals(cur_node.get_board())){
             return cur_node;
          }
-         for(Direction dir : Direction.values()){
+         for(Direction.dir dir : Direction.dir.values()){
             Node next_node = cur_node.make_move(dir);
             if(next_node != null){
                   if(!graph.contains(next_node.get_board())){
