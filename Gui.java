@@ -12,6 +12,8 @@ import java.awt.event.*;
 public class Gui extends JFrame implements ActionListener{
    private Renderer renderer;
    private Game game;
+
+   private int complexity;
    private boolean gave_up;
 
    private Gui_button   button_up, button_down, button_left, button_right; 
@@ -54,6 +56,7 @@ public class Gui extends JFrame implements ActionListener{
       this.renderer.setDoubleBuffered(true);
 
       this.gave_up = false;
+      this.complexity = this.game.get_complexity();
 
       this.initialize_buttons();
       this.draw_frame();
@@ -78,6 +81,7 @@ public class Gui extends JFrame implements ActionListener{
       }
       else if("shuffle".equals(event.getActionCommand())){
          this.game.user_shuffle();
+         this.complexity = this.game.get_complexity();
          this.gave_up = false;
       }
       else if("about".equals(event.getActionCommand())){
@@ -94,12 +98,14 @@ public class Gui extends JFrame implements ActionListener{
          return;
       }
       else if("undo".equals(event.getActionCommand())){
+         this.gave_up = true;
          this.execute_move(this.game.user_undo(), 10);   // removes the last entry in the undo list
                                                          // and then calls execute_move()
          this.game.user_undo();                       // removes the last entry in the undo list 
                                                       // and does nothing
          this.renderer.update_game_state(this.game);
          this.draw_frame();
+         this.gave_up = false;
          return;
       }
       else if("undo all".equals(event.getActionCommand())){
@@ -121,8 +127,9 @@ public class Gui extends JFrame implements ActionListener{
       }
       // handle popups
       if(!this.gave_up && this.game.is_solved()){
-         String message = "Congratulations! You solved the puzzle! in " + this.game.get_num_moves() + "moves!";
+         String message = "Congratulations! You solved the puzzle! in " + this.game.get_num_moves() + "moves!" + "(Complexity: " + this.complexity + ")";
          JOptionPane.showMessageDialog(this, message);
+         this.gave_up = true;
       }
       this.renderer.update_game_state(this.game);
       this.draw_frame();
