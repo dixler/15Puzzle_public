@@ -85,7 +85,7 @@ public class Gui extends JFrame implements ActionListener{
          this.gave_up = false;
       }
       else if("about".equals(event.getActionCommand())){
-         JOptionPane.showMessageDialog(this, "Author: Kyle Dixler\nDate Written: 10/3/2017\nThe 2nd programming assignment for CS 342\n");
+         JOptionPane.showMessageDialog(this, "Author: Kyle Dixler\nDate Written: 10/3/2017\nThe 2nd programming assignment for CS 342\nExtra Credit completed solely image");
          return;
       }
       else if("help".equals(event.getActionCommand())){
@@ -125,14 +125,14 @@ public class Gui extends JFrame implements ActionListener{
          }
          return;
       }
-      // handle popups
+      this.renderer.update_game_state(this.game);
+      this.draw_frame();
+      // handle victory
       if(!this.gave_up && this.game.is_solved()){
          String message = "Congratulations! You solved the puzzle! in " + this.game.get_num_moves() + "moves!" + "(Complexity: " + this.complexity + ")";
          JOptionPane.showMessageDialog(this, message);
          this.gave_up = true;
       }
-      this.renderer.update_game_state(this.game);
-      this.draw_frame();
       return;
    }
 /*          _            _       

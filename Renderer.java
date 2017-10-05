@@ -34,6 +34,7 @@ public class Renderer extends JPanel {
    private int num_moves;
 
    private boolean using_image;
+   private boolean is_solved;
    private BufferedImage[] img_arr;
 
 
@@ -65,7 +66,6 @@ public class Renderer extends JPanel {
       else{
          using_image = false;
       }
-
       this.size = size;
       this.buffer_size = buffer_size;
       this.tile_arr = new Gui_tile[game.get_board().num_tiles()];
@@ -81,8 +81,10 @@ public class Renderer extends JPanel {
       }
       this.complexity = game.get_complexity();
       this.num_moves = game.get_num_moves();
+      this.is_solved = game.is_solved();
 	}
    public void update_game_state(Game game){
+      this.is_solved = game.is_solved();
       this.tile_arr = new Gui_tile[game.get_board().num_tiles()];
       Tile[] tiles = game.get_tiles();
       for(int i = 0; i < tiles.length; i++){
@@ -115,7 +117,7 @@ public class Renderer extends JPanel {
       drawing_context.setFont(new Font("TimesRoman", Font.PLAIN, 36)); 
       // handle all tiles
       for(int i = 0; i < this.tile_arr.length; i++){
-         if(i == this.empty_index){
+         if(i == this.empty_index && !this.is_solved){
             drawing_context.setColor(new Color(0,0,0));
          }
          else{

@@ -75,9 +75,9 @@ public class Board{
    // returns the number of inversions in the board
    public int get_complexity(){
       int inversions = 0;
-      for(int i = 0; i < width*height; i++){
-         for(int j = i+1; j < width*height; j++){
-            if(board[i%width][i/height].index() > board[j%width][j/height].index()){
+      for(int i = 0; i < this.width*this.height; i++){
+         for(int j = i+1; j < this.width*this.height; j++){
+            if(board[i%this.width][i/this.height].index() > board[j%this.width][j/this.height].index()){
                inversions += 1;
             }
          }
