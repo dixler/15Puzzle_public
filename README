@@ -1,7 +1,0 @@
-INSTRUCTIONS
-   run 
-      $ make 
-   to compile
-   run 
-      $ make test 
-   to run it
