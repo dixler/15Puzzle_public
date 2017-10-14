@@ -17,4 +17,7 @@
    and they will slide into the empty space.
 
 ## preview:
+### unsolved:
+![java\_15\_puzzle](https://raw.githubusercontent.com/dixler/java_15_puzzle/master/preview2.png)
+### solved:
 ![java\_15\_puzzle](https://raw.githubusercontent.com/dixler/java_15_puzzle/master/preview1.png)
