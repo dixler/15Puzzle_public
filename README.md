@@ -17,4 +17,4 @@
    and they will slide into the empty space.
 
 ## preview:
-![java\_15\_puzzle](https://github.com/dixler/vim-mode-color/raw/master/doc/preview1.png)
+![java\_15\_puzzle](https://raw.githubusercontent.com/dixler/java_15_puzzle/master/preview1.png)
